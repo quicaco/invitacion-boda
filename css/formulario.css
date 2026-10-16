@@ -1,0 +1,110 @@
+/* ==========================================================================
+   Formulario de confirmación (ventana modal)
+   ========================================================================== */
+
+.velo {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  background: rgba(59, 58, 53, .45);
+  display: grid;
+  place-items: center;
+  padding: 16px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px));
+  overflow-y: auto;
+}
+
+.ficha {
+  background: var(--papel);
+  width: min(100%, 480px);
+  border-radius: 14px;
+  padding: 28px 22px 24px;
+  position: relative;
+  margin: auto;
+  font-family: var(--util);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--tinta);
+}
+.ficha h3 { font: 400 40px/1.1 var(--script); text-align: center; color: var(--tinta); }
+.ficha__sub {
+  text-align: center;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--tinta-suave);
+  margin: 4px 0 18px;
+}
+
+.cerrar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: none;
+  font-size: 22px;
+  color: var(--tinta-suave);
+  cursor: pointer;
+}
+
+/* ---------- Campos ---------- */
+.form,
+.form__grupo { display: grid; gap: 18px; }
+
+fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; min-width: 0; }
+legend,
+.etiqueta { font-weight: 500; font-size: 14px; padding: 0; margin-bottom: 8px; display: block; }
+.req { color: var(--oro); }
+
+/* Opciones tipo «píldora» (radios y checkboxes) */
+.opciones { display: flex; flex-wrap: wrap; gap: 8px; }
+.opciones label { cursor: pointer; }
+.opciones input { position: absolute; opacity: 0; pointer-events: none; }
+.opciones span {
+  display: inline-block;
+  border: 1px solid var(--oro-claro);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 14px;
+  transition: background .2s, border-color .2s;
+}
+.opciones input:checked + span { background: var(--oro); border-color: var(--oro); color: var(--papel); }
+.opciones input:focus-visible + span { outline: 2px solid var(--oro); outline-offset: 2px; }
+
+input[type=text],
+textarea,
+select {
+  width: 100%;
+  font: inherit;
+  color: var(--tinta);
+  background: #fff;
+  border: 1px solid var(--oro-claro);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+textarea { min-height: 76px; resize: vertical; }
+
+.nota { font-size: 12.5px; color: var(--tinta-suave); }
+.nota--centro { text-align: center; }
+.error { color: var(--error); font-size: 13px; }
+
+.enviar {
+  justify-self: center;
+  font: 500 13px/1 var(--util);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: var(--oro);
+  color: var(--papel);
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 30px;
+  cursor: pointer;
+}
+.enviar:hover { background: var(--oro-oscuro); }
+.enviar:disabled { opacity: .7; cursor: default; }
+
+/* ---------- Agradecimiento ---------- */
+.gracias { text-align: center; display: grid; gap: 12px; padding: 12px 0; }
+.gracias p { font-family: var(--display); font-size: 20px; }

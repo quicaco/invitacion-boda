@@ -21,6 +21,14 @@ const FILA_TITULOS = 2;
 const HOJA_HISTORIAL = 'Historial';
 const HOJA_CONFIG = 'Configuración';
 const COL_ABIERTA = 'Abierta';
+const ZONA = 'Europe/Madrid';
+
+// Fecha y hora actuales en hora de España, como texto «dd/MM/yyyy HH:mm:ss».
+// La hoja (configuración regional España) lo convierte en fecha al guardarlo,
+// así la hora es siempre la española aunque el script tenga otra zona horaria.
+function ahora_() {
+  return Utilities.formatDate(new Date(), ZONA, 'dd/MM/yyyy HH:mm:ss');
+}
 
 const COL = {
   codigo: 'Código',
@@ -50,8 +58,8 @@ function doGet(e) {
 
   // Primera apertura (no se cuenta si es una prueba)
   const cAb = ctx.cols[COL_ABIERTA];
-  if (cAb && !(e.parameter.prueba) && (v[COL_ABIERTA] === '' || v[COL_ABIERTA] === null)) {
-    try { ctx.hoja.getRange(fila, cAb).setValue(new Date()); } catch (err) { console.error(err); }
+  if (cAb && !(e.parameter.prueba) && !(v[COL_ABIERTA] instanceof Date)) {
+    try { ctx.hoja.getRange(fila, cAb).setValue(ahora_()); } catch (err) { console.error(err); }
   }
 
   return json_({
@@ -101,7 +109,7 @@ function doPost(e) {
     const tipo = !previo ? 'primera' : (cambios.length ? 'modificacion' : 'sin_cambios');
     if (tipo === 'sin_cambios') return json_({ ok: true, tipo: tipo, anterior: previo.asiste });
 
-    const ahora = new Date();
+    const ahora = ahora_();
     escribir_(ctx, fila, {
       [COL.confirma]: nuevo.asiste,
       [COL.asistentes]: nuevo.asistentes,
@@ -208,8 +216,8 @@ function onEdit(e) {
 }
 
 function completarInvitados() {
-  const ctx = abrir_();
-  prepararHoja_(ctx);
+  prepararHoja_(abrir_());
+  const ctx = abrir_(); // se vuelve a leer: prepararHoja_ puede haber añadido columnas
   const n = completar_(ctx, FILA_TITULOS + 1, ctx.hoja.getLastRow());
   SpreadsheetApp.getActive().toast(n ? n + ' códigos nuevos generados' : 'Todo estaba completo', 'Boda');
 }
@@ -232,6 +240,15 @@ function prepararHoja_(ctx) {
       .setNumberFormat('dd/mm/yyyy hh:mm').setBackground('#e3efdf').clearDataValidations();
     sh.setColumnWidth(nueva, 120);
   }
+  // Limpia de «Abierta» todo lo que no sea una fecha (p. ej. un «Pendiente» puesto por error)
+  const cAb = abrir_().cols[COL_ABIERTA];
+  const ultima = sh.getLastRow();
+  if (cAb && ultima > FILA_TITULOS) {
+    const vals = sh.getRange(FILA_TITULOS + 1, cAb, ultima - FILA_TITULOS, 1).getValues();
+    vals.forEach(function (r, i) {
+      if (r[0] !== '' && !(r[0] instanceof Date)) sh.getRange(FILA_TITULOS + 1 + i, cAb).clearContent();
+    });
+  }
 }
 
 /* ---------- panel de envío por WhatsApp ---------- */
@@ -253,7 +270,7 @@ function listaEnvio() {
   const col = function (t) { return ctx.cols[t] ? ctx.cols[t] - 1 : -1; };
   const iCod = col(COL.codigo), iNom = col(COL.nombre), iTel = col('Teléfono'), iEnv = col('¿Enviada?'),
         iFEnv = col('Fecha de envío'), iAb = col(COL_ABIERTA), iConf = col(COL.confirma);
-  const fecha = function (x) { return x instanceof Date ? Utilities.formatDate(x, Session.getScriptTimeZone(), 'dd/MM HH:mm') : String(x || ''); };
+  const fecha = function (x) { return x instanceof Date ? Utilities.formatDate(x, ZONA, 'dd/MM HH:mm') : String(x || ''); };
   const lista = [];
   datos.forEach(function (r) {
     const codigo = String(r[iCod] || '').trim(), nombre = String(r[iNom] || '').trim();
@@ -279,10 +296,10 @@ function marcarEnviada(codigo) {
   const ctx = abrir_();
   const fila = buscarFila_(ctx, codigo);
   if (!fila) return null;
-  const ahora = new Date();
+  const ahora = ahora_();
   if (ctx.cols['¿Enviada?']) ctx.hoja.getRange(fila, ctx.cols['¿Enviada?']).setValue('Sí');
   if (ctx.cols['Fecha de envío']) ctx.hoja.getRange(fila, ctx.cols['Fecha de envío']).setValue(ahora);
-  return Utilities.formatDate(ahora, Session.getScriptTimeZone(), 'dd/MM HH:mm');
+  return ahora.slice(0, 5) + ' ' + ahora.slice(11, 16);
 }
 
 const PANEL_HTML = `<!doctype html><html><head><base target="_blank"><meta charset="utf-8">

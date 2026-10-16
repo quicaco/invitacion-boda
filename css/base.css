@@ -1,0 +1,79 @@
+/* ==========================================================================
+   Base: colores, tipografías y reset
+   Estilo: tarjeta impresa en una sola columna, blanco roto, dorado y
+   manchas de acuarela verde y arena.
+   ========================================================================== */
+
+:root {
+  /* Colores */
+  --papel: #fdfcf9;
+  --tinta: #3b3a35;
+  --tinta-suave: #77736a;
+  --oro: #a8844a;
+  --oro-oscuro: #94733d;
+  --oro-claro: #d9c49b;
+  --salvia: #a9b9a0;
+  --arena: #e6d7b9;
+  --error: #9a3b2a;
+
+  /* Tipografías */
+  --display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --script: "Pinyon Script", "Snell Roundhand", "Apple Chancery", cursive;
+  --util: "Jost", "Helvetica Neue", Arial, sans-serif;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html,
+body {
+  background: var(--papel);
+  color: var(--tinta);
+  overflow-x: clip;
+  margin: 0;
+}
+
+body {
+  font-family: var(--display);
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+h1, h2, h3 { font-weight: 500; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+a { color: inherit; }
+img { max-width: 100%; }
+
+:focus-visible { outline: 2px solid var(--oro); outline-offset: 3px; }
+
+/* Texto de ejemplo pendiente de sustituir por el real (subrayado de puntos) */
+.ej {
+  text-decoration: underline dotted var(--oro-claro);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+}
+
+/* Etiqueta «Boceto» (solo en modo de prueba) */
+.beta {
+  position: fixed;
+  z-index: 30;
+  right: max(12px, env(safe-area-inset-right, 0px));
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  font: 500 11px/1 var(--util);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: var(--tinta);
+  color: var(--papel);
+  padding: 8px 12px;
+  border-radius: 999px;
+  opacity: .85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
