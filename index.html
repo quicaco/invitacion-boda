@@ -412,7 +412,7 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
   st.codigo=(sp.get('i')||'').trim().toLowerCase();
   if(st.codigo&&API_URL){
     $('saludo').classList.add('cargando');
-    fetch(API_URL+'?i='+encodeURIComponent(st.codigo))
+    fetch(API_URL+'?i='+encodeURIComponent(st.codigo)+(sp.get('prueba')?'&prueba=1':''))
       .then(function(r){return r.json();})
       .then(function(d){
         if(!d.ok){st.modo='error';st.nombre='';st.acompanante=false;}

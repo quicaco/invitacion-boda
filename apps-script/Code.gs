@@ -7,6 +7,11 @@
  * POST {i, ...}   → guarda la respuesta del formulario en la fila de ese código
  *                   y deja constancia de cada envío en la hoja «Historial».
  *
+ * Además, la primera vez que un invitado abre su enlace se anota la fecha en
+ * la columna «Abierta» (salvo si el enlace lleva &prueba=1, para no contar
+ * las pruebas). El menú «Boda → Enviar invitaciones» abre un panel para
+ * mandar los WhatsApp y marca solo «¿Enviada?» y «Fecha de envío».
+ *
  * Las columnas se buscan por su título en la fila 2 de la hoja «Invitados»,
  * así que se pueden reordenar pero no renombrar.
  */
@@ -14,6 +19,8 @@
 const HOJA = 'Invitados';
 const FILA_TITULOS = 2;
 const HOJA_HISTORIAL = 'Historial';
+const HOJA_CONFIG = 'Configuración';
+const COL_ABIERTA = 'Abierta';
 
 const COL = {
   codigo: 'Código',
@@ -40,6 +47,12 @@ function doGet(e) {
 
   const v = leerFila_(ctx, fila);
   const previo = respuestaActual_(v);
+
+  // Primera apertura (no se cuenta si es una prueba)
+  const cAb = ctx.cols[COL_ABIERTA];
+  if (cAb && !(e.parameter.prueba) && (v[COL_ABIERTA] === '' || v[COL_ABIERTA] === null)) {
+    try { ctx.hoja.getRange(fila, cAb).setValue(new Date()); } catch (err) { console.error(err); }
+  }
 
   return json_({
     ok: true,
@@ -176,6 +189,7 @@ const COL_AUTO = {
 
 function onOpen() {
   SpreadsheetApp.getUi().createMenu('Boda')
+    .addItem('Enviar invitaciones', 'abrirPanelEnvio')
     .addItem('Completar códigos y enlaces', 'completarInvitados')
     .addToUi();
 }
@@ -206,7 +220,135 @@ function prepararHoja_(ctx) {
   const regla = SpreadsheetApp.newDataValidation().requireValueInList(['Sí', 'No', 'Pendiente'], true).setAllowInvalid(false).build();
   sh.getRange(FILA_TITULOS + 1, col, sh.getMaxRows() - FILA_TITULOS, 1).setDataValidation(regla);
   historial_();
+  // Columna «Abierta», justo después de «Fecha de envío»
+  if (!ctx.cols[COL_ABIERTA]) {
+    const tras = ctx.cols['Fecha de envío'] || ctx.ancho;
+    sh.insertColumnAfter(tras);
+    const nueva = tras + 1;
+    sh.getRange(FILA_TITULOS, tras).copyTo(sh.getRange(FILA_TITULOS, nueva), SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
+    sh.getRange(FILA_TITULOS, nueva).setValue(COL_ABIERTA)
+      .setNote('Fecha y hora de la primera vez que el invitado abrió su invitación. La rellena la web.');
+    sh.getRange(FILA_TITULOS + 1, nueva, sh.getMaxRows() - FILA_TITULOS, 1)
+      .setNumberFormat('dd/mm/yyyy hh:mm').setBackground('#e3efdf').clearDataValidations();
+    sh.setColumnWidth(nueva, 120);
+  }
 }
+
+/* ---------- panel de envío por WhatsApp ---------- */
+
+function abrirPanelEnvio() {
+  const html = HtmlService.createHtmlOutput(PANEL_HTML).setTitle('Enviar invitaciones');
+  SpreadsheetApp.getUi().showSidebar(html);
+}
+
+// Lista para el panel: una entrada por invitación con nombre.
+function listaEnvio() {
+  const ctx = abrir_();
+  const sh = ctx.hoja, ultima = sh.getLastRow();
+  if (ultima <= FILA_TITULOS) return [];
+  const datos = sh.getRange(FILA_TITULOS + 1, 1, ultima - FILA_TITULOS, ctx.ancho).getValues();
+  const cfg = SpreadsheetApp.getActive().getSheetByName(HOJA_CONFIG);
+  const base = cfg ? String(cfg.getRange('B3').getValue()).trim() : '';
+  const plantilla = cfg ? String(cfg.getRange('B4').getValue()) : '{enlace}';
+  const col = function (t) { return ctx.cols[t] ? ctx.cols[t] - 1 : -1; };
+  const iCod = col(COL.codigo), iNom = col(COL.nombre), iTel = col('Teléfono'), iEnv = col('¿Enviada?'),
+        iFEnv = col('Fecha de envío'), iAb = col(COL_ABIERTA), iConf = col(COL.confirma);
+  const fecha = function (x) { return x instanceof Date ? Utilities.formatDate(x, Session.getScriptTimeZone(), 'dd/MM HH:mm') : String(x || ''); };
+  const lista = [];
+  datos.forEach(function (r) {
+    const codigo = String(r[iCod] || '').trim(), nombre = String(r[iNom] || '').trim();
+    if (!codigo || !nombre) return;
+    const tel = iTel >= 0 ? String(r[iTel] || '').replace(/[^0-9]/g, '') : '';
+    const enlace = base + (base.indexOf('?') >= 0 ? '&' : '?') + 'i=' + codigo;
+    const msg = plantilla.replace(/\{nombre\}/g, nombre).replace(/\{enlace\}/g, enlace);
+    lista.push({
+      codigo: codigo, nombre: nombre, telefono: tel,
+      wa: tel ? 'https://wa.me/' + tel + '?text=' + encodeURIComponent(msg) : '',
+      enviada: iEnv >= 0 && String(r[iEnv]).trim() === 'Sí',
+      fechaEnvio: iFEnv >= 0 ? fecha(r[iFEnv]) : '',
+      abierta: iAb >= 0 ? fecha(r[iAb]) : '',
+      confirma: iConf >= 0 ? String(r[iConf] || '') : '',
+    });
+  });
+  return lista;
+}
+
+function marcarEnviada(codigo) {
+  codigo = limpiarCodigo_(codigo);
+  if (!codigo) return null;
+  const ctx = abrir_();
+  const fila = buscarFila_(ctx, codigo);
+  if (!fila) return null;
+  const ahora = new Date();
+  if (ctx.cols['¿Enviada?']) ctx.hoja.getRange(fila, ctx.cols['¿Enviada?']).setValue('Sí');
+  if (ctx.cols['Fecha de envío']) ctx.hoja.getRange(fila, ctx.cols['Fecha de envío']).setValue(ahora);
+  return Utilities.formatDate(ahora, Session.getScriptTimeZone(), 'dd/MM HH:mm');
+}
+
+const PANEL_HTML = `<!doctype html><html><head><base target="_blank"><meta charset="utf-8">
+<style>
+  body{font-family:Arial,sans-serif;font-size:13px;color:#3b3a35;margin:0;padding:12px}
+  h2{font-size:15px;margin:0 0 4px;color:#a8844a}
+  .resumen{color:#77736a;margin-bottom:10px}
+  .filtros{display:flex;gap:6px;margin-bottom:8px}
+  .filtros button{flex:1;border:1px solid #d9c49b;background:#fff;border-radius:14px;padding:5px;cursor:pointer;font-size:12px}
+  .filtros button.on{background:#a8844a;border-color:#a8844a;color:#fff}
+  input{width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid #d9c49b;border-radius:6px;margin-bottom:8px}
+  .fila{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #eee}
+  .fila .info{flex:1;min-width:0}
+  .fila b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .fila small{color:#77736a}
+  .fila button{border:0;border-radius:14px;padding:6px 12px;cursor:pointer;font-size:12px;background:#1a6e3a;color:#fff;white-space:nowrap}
+  .fila button.re{background:#fff;color:#1a6e3a;border:1px solid #1a6e3a}
+  .fila button:disabled{background:#ccc;color:#fff;border:0;cursor:default}
+  .vacio{color:#77736a;padding:16px 0;text-align:center}
+</style></head><body>
+<h2>Enviar invitaciones</h2>
+<div class="resumen" id="resumen">Cargando…</div>
+<div class="filtros">
+  <button id="f-pend" class="on" onclick="filtro('pend')">Sin enviar</button>
+  <button id="f-todas" onclick="filtro('todas')">Todas</button>
+</div>
+<input id="buscar" placeholder="Buscar por nombre…" oninput="pintar()">
+<div id="lista"></div>
+<script>
+  var datos=[], modo='pend';
+  function cargar(){google.script.run.withSuccessHandler(function(d){datos=d;pintar();}).withFailureHandler(function(e){document.getElementById('resumen').textContent='Error: '+e.message;}).listaEnvio();}
+  function filtro(m){modo=m;document.getElementById('f-pend').className=m==='pend'?'on':'';document.getElementById('f-todas').className=m==='todas'?'on':'';pintar();}
+  function estado(x){
+    var p=[];
+    if(x.enviada)p.push('Enviada '+x.fechaEnvio);
+    if(x.abierta)p.push('Abierta '+x.abierta);
+    if(x.confirma&&x.confirma!=='Pendiente')p.push('Confirma: '+x.confirma);
+    if(!x.telefono)p.push('Sin teléfono');
+    return p.join(' · ')||'Sin enviar';
+  }
+  function pintar(){
+    var q=document.getElementById('buscar').value.toLowerCase();
+    var env=datos.filter(function(x){return x.enviada;}).length;
+    document.getElementById('resumen').textContent=env+' de '+datos.length+' enviadas';
+    var l=datos.filter(function(x){return (modo==='todas'||!x.enviada)&&x.nombre.toLowerCase().indexOf(q)>=0;});
+    var c=document.getElementById('lista'); c.innerHTML='';
+    if(!l.length){c.innerHTML='<div class="vacio">'+(modo==='pend'?'¡No queda ninguna por enviar!':'No hay resultados')+'</div>';return;}
+    l.forEach(function(x){
+      var f=document.createElement('div');f.className='fila';
+      var i=document.createElement('div');i.className='info';
+      var b=document.createElement('b');b.textContent=x.nombre;var s=document.createElement('small');s.textContent=estado(x);
+      i.appendChild(b);i.appendChild(s);
+      var btn=document.createElement('button');
+      btn.textContent=x.enviada?'Reenviar':'Enviar'; if(x.enviada)btn.className='re';
+      if(!x.wa)btn.disabled=true;
+      btn.onclick=function(){
+        window.open(x.wa,'_blank');
+        btn.disabled=true;btn.textContent='Marcando…';
+        google.script.run.withSuccessHandler(function(f){x.enviada=true;x.fechaEnvio=f||'';pintar();})
+          .withFailureHandler(function(){btn.disabled=false;btn.textContent='Reintentar';}).marcarEnviada(x.codigo);
+      };
+      f.appendChild(i);f.appendChild(btn);c.appendChild(f);
+    });
+  }
+  cargar();
+</script></body></html>`;
 
 function completar_(ctx, desde, hasta) {
   const sh = ctx.hoja, n = hasta - desde + 1;
