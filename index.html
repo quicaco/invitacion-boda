@@ -140,7 +140,7 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
 <!-- PORTADA -->
 <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la invitación">
   <div class="sobre-in">
-    <p class="para">Dicen que en martes,<br>ni te cases ni te embarques…<br>Nosotros lo hacemos en sábado.<br>Ya lo sabéis, <b class="ej" id="invitado">Luzmi</b></p>
+    <p class="para">Dicen que en martes,<br>ni te cases ni te embarques…<br>Nosotros lo hacemos en sábado.<br>Ya lo <span data-tu="sabes" data-vos="sabéis">sabes</span>, <b class="ej" id="invitado">Luzmi</b></p>
     <div class="sello" aria-hidden="true">M&amp;V</div>
     <p class="noticia">Tenemos una noticia…</p>
     <div class="filete" aria-hidden="true"></div>
@@ -213,7 +213,7 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
     <span class="mancha m-salvia" style="width:260px;height:260px;top:10px;left:-170px"></span>
     <h2>Autobús</h2>
     <div class="filete" aria-hidden="true"></div>
-    <p class="texto">Habrá autobús de ida y vuelta entre Alcalá y la finca. Si lo necesitas, indícalo al confirmar tu asistencia.</p>
+    <p class="texto">Habrá autobús de ida y vuelta entre Alcalá y la finca. <span data-tu="Si lo necesitas, indícalo al confirmar tu asistencia." data-vos="Si lo necesitáis, indicadlo al confirmar vuestra asistencia.">Si lo necesitas, indícalo al confirmar tu asistencia.</span></p>
     <div class="paradas">
       <div class="parada"><span>Ida · Alcalá → Finca</span><b class="ej">11:45 h</b></div>
       <div class="parada"><span>Vuelta · Finca → Alcalá</span><b class="ej">00:30 h</b></div>
@@ -223,7 +223,7 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
   <section class="bloque" id="dresscode">
     <h2>Dress code</h2>
     <div class="filete" aria-hidden="true"></div>
-    <p class="texto">Queremos veros guapísimos en este día tan especial.</p>
+    <p class="texto"><span data-tu="Queremos verte espectacular" data-vos="Queremos veros espectaculares">Queremos verte espectacular</span> en este día tan especial.</p>
     <p class="texto ej">Formal. Tonos tierra, verdes y dorados.</p>
     <div class="muestras" aria-hidden="true"><i style="background:#c9b48f"></i><i style="background:#a9b9a0"></i><i style="background:#8a7860"></i><i style="background:#e9dfcc"></i></div>
   </section>
@@ -232,8 +232,8 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
     <span class="mancha m-arena" style="width:300px;height:300px;top:20px;right:-170px"></span>
     <h2>Asistencia</h2>
     <div class="filete" aria-hidden="true"></div>
-    <p class="texto">Nos hace muchísima ilusión compartir este día con vosotros.</p>
-    <p class="texto">Por favor, confirmad vuestra asistencia antes del <span class="ej">1 de septiembre de 2027</span>.</p>
+    <p class="texto">Nos hace muchísima ilusión compartir este día <span data-tu="contigo" data-vos="con vosotros">contigo</span>.</p>
+    <p class="texto">Por favor, <span data-tu="confirma tu" data-vos="confirmad vuestra">confirma tu</span> asistencia antes del <span class="ej">1 de septiembre de 2027</span>.</p>
     <button class="boton" type="button" id="abrir-form">
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 20l18-13 18 13v20a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><path d="M6 20l18 13 18-13"/><path d="M19 22l4 4 7-8"/></svg>
       Confirmar asistencia
@@ -347,10 +347,21 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
   }
 
   // Nombre personalizado: ?para=Luzmi o #Luzmi (guiones = espacios)
+  // Trato: ?trato=tu | ?trato=vos. Si no se indica, se deduce del nombre
+  // («Lucía y Pablo», «Familia Ruiz»… → vosotros; «Paula» → tú).
+  var nombre='Luzmi', trato='';
   try{
-    var q=new URLSearchParams(location.search).get('para')||decodeURIComponent(location.hash.slice(1)).replace(/[-_]/g,' ');
-    if(q&&q.trim())document.getElementById('invitado').textContent=q.trim();
+    var sp=new URLSearchParams(location.search);
+    var q=sp.get('para')||decodeURIComponent(location.hash.slice(1)).replace(/[-_]/g,' ');
+    if(q&&q.trim())nombre=q.trim();
+    trato=(sp.get('trato')||'').toLowerCase();
   }catch(e){}
+  if(trato!=='tu'&&trato!=='vos'){
+    var plural=/(^|\s)(y|e)\s|&|,/i.test(nombre)||/^(familia|los|las|tíos|tios|tías|tias|primos|primas|hermanos|hermanas|abuelos|chicos|chicas)\b/i.test(nombre);
+    trato=plural?'vos':'tu';
+  }
+  document.getElementById('invitado').textContent=nombre;
+  document.querySelectorAll('[data-tu]').forEach(function(el){el.textContent=el.getAttribute(trato==='vos'?'data-vos':'data-tu');});
   form.addEventListener('change',sync);sync();
 
   form.addEventListener('submit',function(e){
