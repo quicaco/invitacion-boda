@@ -43,10 +43,14 @@
   transition: opacity .9s ease, visibility .9s;
 }
 .sobre.abierto { opacity: 0; visibility: hidden; }
+.sobre.bloqueado { cursor: default; }
+.sobre[aria-busy="true"] { cursor: progress; }
 
 .sobre__contenido { display: grid; gap: 18px; justify-items: center; max-width: 420px; }
 .sobre__frase { font-style: italic; font-size: clamp(24px, 6.6vw, 30px); line-height: 1.5; }
 .sobre__frase b { font-weight: 500; }
+.sobre__abrir { display: grid; gap: 18px; justify-items: center; }
+.sobre__aviso { font-style: italic; font-size: clamp(20px, 5.4vw, 24px); line-height: 1.5; max-width: 22em; }
 
 #saludo { transition: opacity .4s; }
 #saludo.cargando { opacity: 0; }
@@ -64,7 +68,7 @@
   margin-top: 10px;
   transition: transform .3s;
 }
-.sobre:hover .sello { transform: scale(1.04); }
+.sobre:not(.bloqueado):not([aria-busy="true"]):hover .sello { transform: scale(1.04); }
 
 .noticia { font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--oro); }
 .filete { width: 1px; height: 46px; background: var(--oro); }

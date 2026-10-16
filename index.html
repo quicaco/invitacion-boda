@@ -13,28 +13,33 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Jost:wght@400;500&display=swap">
 
   <!-- Al cambiar CSS o JS, sube el número de ?v= para que los navegadores no usen la copia antigua -->
-  <link rel="stylesheet" href="css/base.css?v=2">
-  <link rel="stylesheet" href="css/invitacion.css?v=2">
-  <link rel="stylesheet" href="css/formulario.css?v=2">
-  <script type="module" src="js/main.js?v=2"></script>
+  <link rel="stylesheet" href="css/base.css?v=3">
+  <link rel="stylesheet" href="css/invitacion.css?v=3">
+  <link rel="stylesheet" href="css/formulario.css?v=3">
+  <script type="module" src="js/main.js?v=3"></script>
 </head>
 <body>
 
   <!-- ===================== PORTADA (sobre) ===================== -->
-  <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la invitación">
+  <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la invitación" aria-busy="true">
     <div class="sobre__contenido">
-      <p class="sobre__frase">
+      <p class="sobre__frase" id="sobre-frase">
         Dicen que en martes,<br>ni te cases ni te embarques…<br>Nosotros lo hacemos en sábado.<br>
         Ya lo <span data-tu="sabes" data-vos="sabéis">sabes</span><span id="saludo">, <b class="ej" id="invitado">Luzmi</b></span>.
       </p>
       <div class="sello" aria-hidden="true">M&amp;V</div>
-      <p class="noticia">Tenemos una noticia…</p>
-      <div class="filete" aria-hidden="true"></div>
-      <p class="toca">(Toca para abrir)</p>
+      <!-- Sin invitación válida: aviso en lugar de la frase, y la portada no se abre -->
+      <p class="sobre__aviso" id="sobre-aviso" hidden></p>
+      <div class="sobre__abrir" id="sobre-abrir">
+        <p class="noticia">Tenemos una noticia…</p>
+        <div class="filete" aria-hidden="true"></div>
+        <p class="toca" id="toca">Cargando…</p>
+      </div>
     </div>
   </div>
 
-  <main class="wrap" id="inicio">
+  <!-- El contenido solo se muestra con una invitación válida (o en modo de prueba) -->
+  <main class="wrap" id="inicio" hidden>
     <span class="mancha mancha--arena mancha--hero-1"></span>
     <span class="mancha mancha--salvia mancha--hero-2"></span>
 
