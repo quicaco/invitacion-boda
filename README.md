@@ -33,6 +33,10 @@ apps-script/
 | `?i=CODIGO` | Invitación real: datos de la hoja y respuestas guardadas |
 | `?i=CODIGO&prueba=1` | Igual, pero sin apuntar la apertura en la columna «Abierta» |
 | `?para=Nombre` | Modo de prueba con ese nombre (`&trato=tu` o `&trato=vos` para forzarlo) |
+| Sin parámetros o código no válido | Solo la portada con un aviso; el contenido de la boda no se muestra |
+
+> Ocultar el contenido evita que lo vea quien no tiene enlace, pero los datos siguen
+> en el HTML (y el repositorio es público). No pongas aquí nada que no pueda ser público.
 
 ## Textos que cambian según el trato
 

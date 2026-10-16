@@ -4,7 +4,7 @@
  * modo:
  *   'invitacion'     → código válido; los datos vienen de la hoja.
  *   'sin_invitacion' → sin código, código inexistente o fallo al cargar:
- *                      se ve la información, pero no se puede confirmar.
+ *                      solo se ve la portada con un aviso; el contenido no se muestra.
  *   'demo'           → solo con ?para=Nombre (para probar): nada se guarda.
  *
  * motivo (solo en 'sin_invitacion'): 'sin_codigo' | 'no_encontrada' | 'conexion'

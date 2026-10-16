@@ -50,18 +50,18 @@ export function avisoYaRespondido({ trato, asiste }) {
     'Ya nos confirmasteis vuestra asistencia. Si cambiáis algo, volved a enviarlo.');
 }
 
-/** Aviso que sustituye al formulario cuando no hay una invitación válida. */
+/** Aviso que se muestra en la portada cuando no hay una invitación válida. */
 export function avisoSinInvitacion(motivo) {
-  const comoConfirmar =
-    'Para confirmar tu asistencia necesitas el enlace personal que te enviamos por WhatsApp. ' +
-    'Ábrelo desde el mensaje y podrás confirmar aquí. Si no lo encuentras, escríbenos.';
+  const comoAbrir =
+    'Para ver la invitación y confirmar tu asistencia necesitas el enlace personal que te enviamos por WhatsApp. ' +
+    'Ábrelo desde el mensaje. Si no lo encuentras, escríbenos.';
   if (motivo === 'conexion') {
     return 'No hemos podido cargar tu invitación. Comprueba tu conexión y vuelve a cargar la página.';
   }
   if (motivo === 'no_encontrada') {
-    return `Este enlace no es válido o está incompleto. ${comoConfirmar}`;
+    return `Este enlace no es válido o está incompleto. ${comoAbrir}`;
   }
-  return comoConfirmar;
+  return comoAbrir;
 }
 
 export const ERRORES = {

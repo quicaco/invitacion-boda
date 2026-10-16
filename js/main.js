@@ -5,20 +5,28 @@
  *   ?i=CODIGO            invitación real (datos de la hoja)
  *   ?i=CODIGO&prueba=1   igual, pero sin apuntar la apertura en la hoja
  *   ?para=Nombre         modo de prueba con ese nombre (&trato=tu|vos para forzarlo)
- *   (sin nada)           se ve la información, pero para confirmar hace falta el enlace personal
+ *   (sin nada)           solo la portada con un aviso: hace falta el enlace personal
+ *
+ * Sin una invitación válida no se muestra el contenido de la boda.
  */
 import { BODA } from './config.js';
 import { estado } from './estado.js';
 import { hayApi, obtenerInvitacion, InvitacionNoEncontrada } from './api.js';
 import { deducirTrato, aplicarTrato } from './trato.js';
-import { iniciarPortada, saludoCargando, pintarSaludo } from './portada.js';
+import { iniciarPortada, saludoCargando, pintarSaludo, habilitarPortada, bloquearPortada } from './portada.js';
+import { avisoSinInvitacion } from './mensajes.js';
 import { iniciarCuentaAtras } from './cuenta-atras.js';
 import { iniciarFormulario, prepararFormulario } from './formulario.js';
 
 function pintar() {
+  if (estado.modo === 'sin_invitacion') {
+    bloquearPortada(avisoSinInvitacion(estado.motivo));
+    return;
+  }
   pintarSaludo(estado.nombre, { esEjemplo: estado.modo !== 'invitacion' });
   aplicarTrato(estado.trato);
   prepararFormulario();
+  habilitarPortada();
 }
 
 async function cargarInvitacion(parametros) {
@@ -63,7 +71,7 @@ async function iniciar() {
   } else if (parametros.has('para') || !hayApi()) {
     cargarDemo(parametros);
   } else {
-    // Sin código: se ve la información, pero no se puede confirmar
+    // Sin código: solo la portada con el aviso
     Object.assign(estado, { modo: 'sin_invitacion', motivo: estado.codigo ? 'no_encontrada' : 'sin_codigo', nombre: '' });
   }
 
