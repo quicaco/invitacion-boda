@@ -1,0 +1,12 @@
+# Nunca subir datos de invitados (nombres, teléfonos)
+*.xlsx
+*.xls
+*.csv
+*.ods
+datos/
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
