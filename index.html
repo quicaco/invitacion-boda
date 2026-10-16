@@ -50,6 +50,8 @@ a{color:inherit}
 .sobre-in{display:grid;gap:18px;justify-items:center;max-width:420px}
 .sobre .para{font-style:italic;font-size:clamp(24px, 6.6vw, 30px);line-height:1.5}
 .sobre .para b{font-weight:500}
+#saludo{transition:opacity .4s}
+#saludo.cargando{opacity:0}
 .sello{width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #c9a466, var(--oro) 60%, #8a6a35);display:grid;place-items:center;color:var(--papel);font:400 34px/1 var(--script);box-shadow:0 2px 0 rgba(0,0,0,.08);margin-top:10px;transition:transform .3s}
 .sobre:hover .sello{transform:scale(1.04)}
 .noticia{font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--oro)}
@@ -140,7 +142,7 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
 <!-- PORTADA -->
 <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la invitación">
   <div class="sobre-in">
-    <p class="para">Dicen que en martes,<br>ni te cases ni te embarques…<br>Nosotros lo hacemos en sábado.<br>Ya lo <span data-tu="sabes" data-vos="sabéis">sabes</span>, <b class="ej" id="invitado">Luzmi</b></p>
+    <p class="para">Dicen que en martes,<br>ni te cases ni te embarques…<br>Nosotros lo hacemos en sábado.<br>Ya lo <span data-tu="sabes" data-vos="sabéis">sabes</span><span id="saludo">, <b class="ej" id="invitado">Luzmi</b></span>.</p>
     <div class="sello" aria-hidden="true">M&amp;V</div>
     <p class="noticia">Tenemos una noticia…</p>
     <div class="filete" aria-hidden="true"></div>
@@ -254,22 +256,31 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
     <p class="sub">Confirmación de asistencia</p>
 
     <form id="rsvp" novalidate>
-      <div>
+      <p class="nota" id="ya-resp" hidden></p>
+
+      <div id="nombre-box">
         <label class="t" for="nombre">Nombre y apellidos <span class="req">*</span></label>
         <input type="text" id="nombre" name="nombre" autocomplete="name">
       </div>
 
       <div style="display:grid;gap:18px">
-        <fieldset>
-          <legend>¿Vienes acompañado/a?</legend>
-          <div class="opciones">
-            <label><input type="radio" name="acomp" id="acomp-no" value="no" checked><span>Vengo solo/a</span></label>
-            <label><input type="radio" name="acomp" id="acomp-si" value="si"><span>Con acompañante</span></label>
+        <div id="cuantos-box" hidden>
+          <label class="t" for="cuantos">¿Cuántos vais a venir?</label>
+          <select id="cuantos" name="cuantos"></select>
+        </div>
+
+        <div id="acomp-q" style="display:grid;gap:18px">
+          <fieldset>
+            <legend>¿Vienes acompañado/a?</legend>
+            <div class="opciones">
+              <label><input type="radio" name="acomp" id="acomp-no" value="no" checked><span>Vengo solo/a</span></label>
+              <label><input type="radio" name="acomp" id="acomp-si" value="si"><span>Con acompañante</span></label>
+            </div>
+          </fieldset>
+          <div id="acomp-box" hidden>
+            <label class="t" for="acomp-nombre">Nombre del acompañante <span class="req">*</span></label>
+            <input type="text" id="acomp-nombre" name="acomp_nombre">
           </div>
-        </fieldset>
-        <div id="acomp-box" hidden>
-          <label class="t" for="acomp-nombre">Nombre del acompañante</label>
-          <input type="text" id="acomp-nombre" name="acomp_nombre">
         </div>
 
         <fieldset>
@@ -286,22 +297,22 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
         </fieldset>
 
         <fieldset>
-          <legend>¿Necesitarás autobús? (ida y vuelta Alcalá ⇄ finca)</legend>
+          <legend><span data-tu="¿Necesitarás autobús?" data-vos="¿Necesitaréis autobús?">¿Necesitarás autobús?</span> (ida y vuelta Alcalá ⇄ finca)</legend>
           <div class="opciones">
-            <label><input type="radio" name="bus" id="bus-no" value="no" checked><span>No, voy en coche</span></label>
-            <label><input type="radio" name="bus" id="bus-si" value="si"><span>Sí, quiero autobús</span></label>
+            <label><input type="radio" name="bus" id="bus-no" value="no" checked><span data-tu="No, voy en coche" data-vos="No, vamos en coche">No, voy en coche</span></label>
+            <label><input type="radio" name="bus" id="bus-si" value="si"><span data-tu="Sí, quiero autobús" data-vos="Sí, queremos autobús">Sí, quiero autobús</span></label>
           </div>
         </fieldset>
       </div>
 
       <div>
-        <label class="t" for="mensaje">¿Algo que quieras decirnos?</label>
+        <label class="t" for="mensaje"><span data-tu="¿Algo que quieras decirnos?" data-vos="¿Algo que queráis decirnos?">¿Algo que quieras decirnos?</span></label>
         <textarea id="mensaje" name="mensaje"></textarea>
       </div>
 
       <p class="error" id="error" hidden></p>
-      <button class="enviar" type="submit">Enviar</button>
-      <p class="nota" style="text-align:center">Versión beta: de momento las respuestas no se guardan.</p>
+      <button class="enviar" type="submit" id="enviar">Enviar</button>
+      <p class="nota" id="nota-demo" style="text-align:center">Modo de prueba: estas respuestas no se guardan.</p>
     </form>
 
     <div class="gracias" id="gracias" hidden>
@@ -311,17 +322,21 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
   </div>
 </div>
 
-<span class="beta">Boceto · datos de ejemplo</span>
+<span class="beta" id="beta">Boceto · datos de ejemplo</span>
 
 <script>
 (function(){
-  // Portada
+  // Dirección del Apps Script (Implementar → Aplicación web). Vacía = modo de prueba.
+  var API_URL='https://script.google.com/macros/s/AKfycbwvMHgTlsqs6vXSatfwAsMyOAqrECDeXPWgOsVT9HcIH27rMiwr5aqK4LIlrZTNXjJN/exec';
+  var FECHA_BODA='23 de octubre';
+
+  // ---------- Portada ----------
   var sobre=document.getElementById('sobre');
   function abrir(){sobre.classList.add('abierto');sobre.setAttribute('aria-hidden','true');}
   sobre.addEventListener('click',abrir);
   sobre.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();abrir();}});
 
-  // Cuenta atrás (hora de España, CEST)
+  // ---------- Cuenta atrás (hora de España) ----------
   var boda=new Date('2027-10-23T12:30:00+02:00').getTime();
   function tic(){
     var ms=Math.max(0,boda-Date.now());
@@ -331,47 +346,124 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
   }
   tic();setInterval(tic,30000);
 
-  // Formulario
-  var velo=document.getElementById('velo'),form=document.getElementById('rsvp'),gracias=document.getElementById('gracias'),err=document.getElementById('error');
-  function show(){velo.hidden=false;document.body.style.overflow='hidden';document.getElementById('nombre').focus({preventScroll:true});}
+  // ---------- Estado ----------
+  // modo: 'demo' (sin código o sin API), 'invitacion' (código válido), 'error' (código no encontrado)
+  var st={modo:'demo',codigo:'',nombre:'Luzmi',trato:'tu',plazas:1,acompanante:true,respuesta:null};
+  var $=function(id){return document.getElementById(id);};
+  var form=$('rsvp'),velo=$('velo'),gracias=$('gracias'),err=$('error');
+
+  function aplicarTrato(){
+    document.querySelectorAll('[data-tu]').forEach(function(el){el.textContent=el.getAttribute(st.trato==='vos'?'data-vos':'data-tu');});
+  }
+  function deducirTrato(n){
+    return (/(^|\s)(y|e)\s|&|,/i.test(n)||/^(familia|los|las|tíos|tios|tías|tias|primos|primas|hermanos|hermanas|abuelos|chicos|chicas)\b/i.test(n))?'vos':'tu';
+  }
+  function pintarSaludo(){
+    $('invitado').textContent=st.nombre;
+    $('saludo').hidden=!st.nombre;
+    $('saludo').classList.remove('cargando');
+    aplicarTrato();
+  }
+  function pintarModo(){
+    var inv=st.modo==='invitacion';
+    $('invitado').classList.toggle('ej',!inv);
+    $('beta').hidden=inv;
+    $('nota-demo').hidden=inv;
+    $('nombre-box').hidden=st.modo!=='demo';
+    $('acomp-q').hidden=!st.acompanante;
+    var sel=$('cuantos'); sel.innerHTML='';
+    for(var n=st.plazas;n>=1;n--){var o=document.createElement('option');o.value=n;o.textContent=n===1?'1 persona':n+' personas';sel.appendChild(o);}
+    $('cuantos-box').hidden=st.plazas<2;
+    if(st.respuesta)rellenar(st.respuesta);
+    sync();
+  }
+  function rellenar(r){
+    var acomp=!!(r.nombreAcomp&&st.acompanante);
+    $('cuantos').value=String(Math.max(1,Math.min(st.plazas,(r.asistentes||1)-(acomp?1:0))));
+    $(acomp?'acomp-si':'acomp-no').checked=true; $('acomp-nombre').value=r.nombreAcomp||'';
+    var otras=[];
+    String(r.alergias||'').split(',').map(function(x){return x.trim();}).filter(Boolean).forEach(function(a){
+      var cb=form.querySelector('input[name="dieta"][value="'+a.replace(/"/g,'')+'"]');
+      if(cb)cb.checked=true; else otras.push(a);
+    });
+    $('dieta-otra').value=otras.join(', ');
+    $(r.autobus==='Sí'?'bus-si':'bus-no').checked=true;
+    $('mensaje').value=r.mensaje||'';
+    var y=$('ya-resp'); y.hidden=false;
+    y.textContent=st.trato==='vos'?'Ya nos confirmasteis vuestra asistencia. Si cambiáis algo, volved a enviarlo.':'Ya nos confirmaste tu asistencia. Si cambias algo, vuelve a enviarlo.';
+  }
+
+  // ---------- Carga de la invitación ----------
+  var sp; try{sp=new URLSearchParams(location.search);}catch(e){sp={get:function(){return null;}};}
+  st.codigo=(sp.get('i')||'').trim().toLowerCase();
+  if(st.codigo&&API_URL){
+    $('saludo').classList.add('cargando');
+    fetch(API_URL+'?i='+encodeURIComponent(st.codigo))
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(!d.ok){st.modo='error';st.nombre='';st.acompanante=false;}
+        else{st.modo='invitacion';st.nombre=d.nombre;st.trato=d.trato;st.plazas=d.plazas;st.acompanante=d.acompanante;st.respuesta=d.respuesta;}
+      })
+      .catch(function(){st.modo='error';st.nombre='';})
+      .then(function(){pintarSaludo();pintarModo();});
+  }else{
+    // Modo de prueba: ?para=Nombre y opcionalmente &trato=tu|vos
+    var q=sp.get('para')||(location.hash?decodeURIComponent(location.hash.slice(1)).replace(/[-_]/g,' '):'');
+    if(q&&q.trim())st.nombre=q.trim();
+    var t=(sp.get('trato')||'').toLowerCase();
+    st.trato=(t==='tu'||t==='vos')?t:deducirTrato(st.nombre);
+    pintarSaludo();pintarModo();
+  }
+
+  // ---------- Formulario ----------
+  function show(){velo.hidden=false;document.body.style.overflow='hidden';}
   function hide(){velo.hidden=true;document.body.style.overflow='';}
-  document.getElementById('abrir-form').addEventListener('click',show);
-  document.getElementById('cerrar').addEventListener('click',hide);
-  document.getElementById('cerrar2').addEventListener('click',function(){hide();form.hidden=false;gracias.hidden=true;form.reset();sync();});
+  $('abrir-form').addEventListener('click',show);
+  $('cerrar').addEventListener('click',hide);
+  $('cerrar2').addEventListener('click',function(){hide();form.hidden=false;gracias.hidden=true;});
   velo.addEventListener('click',function(e){if(e.target===velo)hide();});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!velo.hidden)hide();});
 
   function val(n){var el=form.querySelector('input[name="'+n+'"]:checked');return el?el.value:'';}
-  function sync(){
-    document.getElementById('acomp-box').hidden=val('acomp')!=='si';
-  }
+  function sync(){$('acomp-box').hidden=!st.acompanante||val('acomp')!=='si';}
+  form.addEventListener('change',sync);
 
-  // Nombre personalizado: ?para=Luzmi o #Luzmi (guiones = espacios)
-  // Trato: ?trato=tu | ?trato=vos. Si no se indica, se deduce del nombre
-  // («Lucía y Pablo», «Familia Ruiz»… → vosotros; «Paula» → tú).
-  var nombre='Luzmi', trato='';
-  try{
-    var sp=new URLSearchParams(location.search);
-    var q=sp.get('para')||decodeURIComponent(location.hash.slice(1)).replace(/[-_]/g,' ');
-    if(q&&q.trim())nombre=q.trim();
-    trato=(sp.get('trato')||'').toLowerCase();
-  }catch(e){}
-  if(trato!=='tu'&&trato!=='vos'){
-    var plural=/(^|\s)(y|e)\s|&|,/i.test(nombre)||/^(familia|los|las|tíos|tios|tías|tias|primos|primas|hermanos|hermanas|abuelos|chicos|chicas)\b/i.test(nombre);
-    trato=plural?'vos':'tu';
-  }
-  document.getElementById('invitado').textContent=nombre;
-  document.querySelectorAll('[data-tu]').forEach(function(el){el.textContent=el.getAttribute(trato==='vos'?'data-vos':'data-tu');});
-  form.addEventListener('change',sync);sync();
+  function fallo(t){err.textContent=t;err.hidden=false;}
 
   form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var faltan=[];
-    if(!document.getElementById('nombre').value.trim())faltan.push('tu nombre');
-    if(faltan.length){err.textContent='Falta indicar '+faltan.join(' y ')+'.';err.hidden=false;return;}
-    err.hidden=true;
-    document.getElementById('gracias-txt').textContent='¡Qué alegría! Gracias, '+document.getElementById('nombre').value.trim().split(' ')[0]+'. Te esperamos el 23 de octubre.';
-    form.hidden=true;gracias.hidden=false;
+    e.preventDefault(); err.hidden=true;
+    if(st.modo==='error'){fallo('No encontramos tu invitación. Revisa que el enlace esté completo o escríbenos.');return;}
+    if(st.modo==='demo'&&!$('nombre').value.trim()){fallo('Falta indicar tu nombre.');return;}
+    var conAcomp=st.acompanante&&val('acomp')==='si';
+    if(conAcomp&&!$('acomp-nombre').value.trim()){fallo('Falta el nombre de tu acompañante.');return;}
+
+    var dieta=[].slice.call(form.querySelectorAll('input[name="dieta"]:checked')).map(function(c){return c.value;});
+    if($('dieta-otra').value.trim())dieta.push($('dieta-otra').value.trim());
+    var datos={
+      i:st.codigo,
+      asistentes:st.plazas>1?Number($('cuantos').value):1,
+      nombreAcomp:conAcomp?$('acomp-nombre').value.trim():'',
+      alergias:dieta.join(', '),
+      autobus:val('bus')==='si'?'Sí':'No',
+      mensaje:$('mensaje').value.trim()
+    };
+    var nombreGracias=st.modo==='demo'?$('nombre').value.trim().split(' ')[0]:st.nombre;
+    function ok(){
+      st.respuesta={asistentes:datos.asistentes+(datos.nombreAcomp?1:0),nombreAcomp:datos.nombreAcomp,alergias:datos.alergias,autobus:datos.autobus,mensaje:datos.mensaje};
+      $('gracias-txt').textContent=st.trato==='vos'
+        ?'¡Qué alegría, '+nombreGracias+'! Os esperamos el '+FECHA_BODA+'.'
+        :'¡Qué alegría, '+nombreGracias+'! Te esperamos el '+FECHA_BODA+'.';
+      form.hidden=true;gracias.hidden=false;
+      if(st.modo==='invitacion')rellenar(st.respuesta);
+    }
+    if(st.modo==='demo'){ok();return;}
+
+    var btn=$('enviar'); btn.disabled=true; btn.textContent='Enviando…';
+    fetch(API_URL,{method:'POST',body:JSON.stringify(datos)})
+      .then(function(r){return r.json();})
+      .then(function(d){if(!d.ok)throw new Error();ok();})
+      .catch(function(){fallo('No se ha podido enviar. Comprueba tu conexión e inténtalo de nuevo.');})
+      .then(function(){btn.disabled=false;btn.textContent='Enviar';});
   });
 })();
 </script>
