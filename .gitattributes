@@ -1,0 +1,9 @@
+# Fin de línea LF en todos los archivos de texto, en el repositorio y en la copia local
+* text=auto eol=lf
+
+# Binarios
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary

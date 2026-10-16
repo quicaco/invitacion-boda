@@ -1,501 +1,253 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex, nofollow">
-<meta property="og:title" content="Marta &amp; Víctor · 23.10.2027">
-<meta property="og:description" content="Tenemos una noticia…">
-<title>Marta &amp; Víctor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Jost:wght@400;500&display=swap">
-<style>
-/* Layout: una sola columna estrecha tipo tarjeta impresa; sobre de portada que se abre al tocar; secciones separadas por un filete dorado vertical, como la referencia. */
-:root{
-  --papel:#fdfcf9;
-  --tinta:#3b3a35;
-  --tinta-suave:#77736a;
-  --oro:#a8844a;
-  --oro-claro:#d9c49b;
-  --salvia:#a9b9a0;
-  --arena:#e6d7b9;
-  --display:"Cormorant Garamond", "Iowan Old Style", Georgia, serif;
-  --script:"Pinyon Script", "Snell Roundhand", "Apple Chancery", cursive;
-  --util:"Jost", "Helvetica Neue", Arial, sans-serif;
-  color-scheme:light;
-}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-html,body{background:var(--papel);color:var(--tinta);overflow-x:clip}
-body{font-family:var(--display);font-size:19px;line-height:1.55;overflow-x:clip}
-.wrap{max-width:560px;margin:0 auto;padding-block:0 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));position:relative}
-h1,h2,h3{font-weight:500;text-wrap:balance;margin:0}
-p{margin:0}
-a{color:inherit}
-:focus-visible{outline:2px solid var(--oro);outline-offset:3px}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="Marta &amp; Víctor · 23.10.2027">
+  <meta property="og:description" content="Tenemos una noticia…">
+  <title>Marta &amp; Víctor</title>
 
-/* Etiqueta beta */
-.beta{position:fixed;z-index:30;right:max(12px, env(safe-area-inset-right, 0px));bottom:calc(12px + env(safe-area-inset-bottom, 0px));font:500 11px/1 var(--util);letter-spacing:.08em;text-transform:uppercase;background:var(--tinta);color:var(--papel);padding:8px 12px;border-radius:999px;opacity:.85}
-.ej{text-decoration:underline dotted var(--oro-claro);text-underline-offset:4px;text-decoration-thickness:1.5px}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Jost:wght@400;500&display=swap">
 
-/* Acuarelas */
-.mancha{position:absolute;pointer-events:none;border-radius:50%;filter:blur(18px);opacity:.55;z-index:0}
-.m-salvia{background:radial-gradient(closest-side, var(--salvia), transparent)}
-.m-arena{background:radial-gradient(closest-side, var(--arena), transparent)}
-
-/* Sobre de portada */
-.sobre{position:fixed;inset:0;z-index:40;background:var(--papel);display:grid;place-items:center;text-align:center;padding:24px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px));cursor:pointer;transition:opacity .9s ease, visibility .9s}
-.sobre.abierto{opacity:0;visibility:hidden}
-.sobre-in{display:grid;gap:18px;justify-items:center;max-width:420px}
-.sobre .para{font-style:italic;font-size:clamp(24px, 6.6vw, 30px);line-height:1.5}
-.sobre .para b{font-weight:500}
-#saludo{transition:opacity .4s}
-#saludo.cargando{opacity:0}
-.sello{width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #c9a466, var(--oro) 60%, #8a6a35);display:grid;place-items:center;color:var(--papel);font:400 34px/1 var(--script);box-shadow:0 2px 0 rgba(0,0,0,.08);margin-top:10px;transition:transform .3s}
-.sobre:hover .sello{transform:scale(1.04)}
-.noticia{font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--oro)}
-.filete{width:1px;height:46px;background:var(--oro)}
-.toca{font-size:18px;color:var(--tinta-suave)}
-
-/* Cabecera */
-.hero{position:relative;text-align:center;padding-top:40px}
-.marco{position:relative;z-index:1;margin:0 auto;width:min(100%, 380px);aspect-ratio:4/5;max-width:100%;border-radius:190px 190px 12px 12px;background:
-  radial-gradient(120% 70% at 50% 100%, #c8d3bf 0%, transparent 60%),
-  radial-gradient(90% 60% at 30% 20%, #efe3c9 0%, transparent 70%),
-  linear-gradient(#f4efe4, #e9e2d2);display:grid;place-items:center;overflow:hidden;border:1px solid var(--oro-claro)}
-.marco .mono{font:400 92px/1 var(--script);color:var(--oro)}
-.marco .foto{position:absolute;bottom:14px;left:0;right:0;font:400 11px/1.3 var(--util);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-suave)}
-.nombres{font:400 clamp(48px, 13vw, 66px)/1.1 var(--script);color:var(--tinta);margin-top:28px}
-.casamos{font-size:28px;letter-spacing:.08em;color:var(--oro);text-transform:uppercase;margin-top:6px}
-.fecha{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;max-width:360px;margin:22px auto 0;font-variant-numeric:lining-nums}
-.fecha .mes,.fecha .anio{grid-column:1/-1;font-size:20px;letter-spacing:.14em;text-transform:uppercase}
-.fecha .lado{border-top:1px solid var(--oro-claro);border-bottom:1px solid var(--oro-claro);padding:6px 0;font-size:20px;letter-spacing:.08em;text-transform:uppercase}
-.fecha .dia{font-size:58px;line-height:1}
-
-/* Cuenta atrás */
-.cuenta{display:flex;justify-content:center;gap:clamp(14px, 5vw, 32px);margin-top:36px;font-variant-numeric:tabular-nums lining-nums}
-.cuenta div{display:grid;justify-items:center;min-width:52px}
-.cuenta b{font-size:34px;font-weight:500;line-height:1.1}
-.cuenta span{font:500 10.5px/1 var(--util);letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-suave);margin-top:6px}
-
-/* Secciones */
-section.bloque{position:relative;text-align:center;padding-top:72px;display:grid;justify-items:center;gap:14px}
-section.bloque > *{position:relative;z-index:1}
-.bloque h2{font-size:28px;letter-spacing:.1em;text-transform:uppercase;color:var(--oro)}
-.bloque .filete{height:38px}
-.lugar{font-style:italic;font-size:24px}
-.texto{max-width:30em;color:var(--tinta)}
-.texto + .texto{margin-top:2px}
-.boton{display:inline-flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;font:500 11.5px/1.2 var(--util);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-suave);background:none;border:0;cursor:pointer;padding:6px}
-.boton svg{width:44px;height:44px;color:var(--oro);transition:transform .25s}
-.boton:hover svg{transform:translateY(-2px)}
-
-/* Itinerario */
-.itinerario{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:22px;text-align:left}
-.itinerario li{display:grid;grid-template-columns:56px auto;align-items:center;gap:18px}
-.itinerario svg{width:52px;height:52px;color:var(--oro)}
-.itinerario b{font-weight:500;font-variant-numeric:tabular-nums lining-nums}
-
-/* Paradas autobús */
-.paradas{display:grid;gap:10px;width:min(100%, 380px);margin-top:4px}
-.parada{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--oro-claro);padding:6px 2px;text-align:left}
-.parada b{font-weight:500;font-variant-numeric:tabular-nums lining-nums}
-
-/* Paleta dress code */
-.muestras{display:flex;gap:10px;margin-top:4px}
-.muestras i{width:28px;height:28px;border-radius:50%;border:1px solid rgba(0,0,0,.06)}
-
-/* Formulario */
-.velo{position:fixed;inset:0;z-index:35;background:rgba(59,58,53,.45);display:grid;place-items:center;padding:16px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px));overflow-y:auto}
-.ficha{background:var(--papel);width:min(100%, 480px);border-radius:14px;padding:28px 22px 24px;position:relative;margin:auto;font-family:var(--util);font-size:15px;line-height:1.45;color:var(--tinta)}
-.ficha h3{font:400 40px/1.1 var(--script);text-align:center;color:var(--tinta)}
-.ficha .sub{text-align:center;font-family:var(--display);font-style:italic;font-size:18px;color:var(--tinta-suave);margin:4px 0 18px}
-.cerrar{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:0;background:none;font-size:22px;color:var(--tinta-suave);cursor:pointer}
-form{display:grid;gap:18px}
-fieldset{border:0;margin:0;padding:0;display:grid;gap:8px;min-width:0}
-legend,label.t{font-weight:500;font-size:14px;padding:0;margin-bottom:8px}
-.req{color:var(--oro)}
-.opciones{display:flex;flex-wrap:wrap;gap:8px}
-.opciones label{cursor:pointer}
-.opciones input{position:absolute;opacity:0;pointer-events:none}
-.opciones span{display:inline-block;border:1px solid var(--oro-claro);border-radius:999px;padding:7px 14px;font-size:14px;transition:background .2s, border-color .2s}
-.opciones input:checked + span{background:var(--oro);border-color:var(--oro);color:var(--papel)}
-.opciones input:focus-visible + span{outline:2px solid var(--oro);outline-offset:2px}
-input[type=text],textarea,select{width:100%;font:inherit;color:var(--tinta);background:#fff;border:1px solid var(--oro-claro);border-radius:8px;padding:10px 12px}
-textarea{min-height:76px;resize:vertical}
-.nota{font-size:12.5px;color:var(--tinta-suave)}
-.enviar{justify-self:center;font:500 13px/1 var(--util);letter-spacing:.12em;text-transform:uppercase;background:var(--oro);color:var(--papel);border:0;border-radius:999px;padding:14px 30px;cursor:pointer}
-.enviar:hover{background:#94733d}
-.error{color:#9a3b2a;font-size:13px}
-.gracias{text-align:center;display:grid;gap:12px;padding:12px 0}
-.gracias p{font-family:var(--display);font-size:20px}
-
-footer{text-align:center;margin-top:84px;display:grid;gap:6px;justify-items:center;position:relative}
-footer .mono{font:400 44px/1 var(--script);color:var(--oro)}
-footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:uppercase;color:var(--tinta-suave)}
-
-@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
-</style>
+  <!-- Al cambiar CSS o JS, sube el número de ?v= para que los navegadores no usen la copia antigua -->
+  <link rel="stylesheet" href="css/base.css?v=2">
+  <link rel="stylesheet" href="css/invitacion.css?v=2">
+  <link rel="stylesheet" href="css/formulario.css?v=2">
+  <script type="module" src="js/main.js?v=2"></script>
 </head>
 <body>
-<!-- PORTADA -->
-<div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la invitación">
-  <div class="sobre-in">
-    <p class="para">Dicen que en martes,<br>ni te cases ni te embarques…<br>Nosotros lo hacemos en sábado.<br>Ya lo <span data-tu="sabes" data-vos="sabéis">sabes</span><span id="saludo">, <b class="ej" id="invitado">Luzmi</b></span>.</p>
-    <div class="sello" aria-hidden="true">M&amp;V</div>
-    <p class="noticia">Tenemos una noticia…</p>
-    <div class="filete" aria-hidden="true"></div>
-    <p class="toca">(Toca para abrir)</p>
+
+  <!-- ===================== PORTADA (sobre) ===================== -->
+  <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la invitación">
+    <div class="sobre__contenido">
+      <p class="sobre__frase">
+        Dicen que en martes,<br>ni te cases ni te embarques…<br>Nosotros lo hacemos en sábado.<br>
+        Ya lo <span data-tu="sabes" data-vos="sabéis">sabes</span><span id="saludo">, <b class="ej" id="invitado">Luzmi</b></span>.
+      </p>
+      <div class="sello" aria-hidden="true">M&amp;V</div>
+      <p class="noticia">Tenemos una noticia…</p>
+      <div class="filete" aria-hidden="true"></div>
+      <p class="toca">(Toca para abrir)</p>
+    </div>
   </div>
-</div>
 
-<main class="wrap" id="inicio">
-  <span class="mancha m-arena" style="width:300px;height:300px;top:-60px;right:-140px"></span>
-  <span class="mancha m-salvia" style="width:240px;height:240px;top:420px;left:-150px"></span>
+  <main class="wrap" id="inicio">
+    <span class="mancha mancha--arena mancha--hero-1"></span>
+    <span class="mancha mancha--salvia mancha--hero-2"></span>
 
-  <header class="hero">
-    <div class="marco" role="img" aria-label="Espacio para la foto de Marta y Víctor">
-      <span class="mono" aria-hidden="true">M&amp;V</span>
-      <span class="foto">Aquí irá vuestra foto</span>
-    </div>
-    <h1 class="nombres">Marta &amp; Víctor</h1>
-    <p class="casamos">¡Nos casamos!</p>
-    <div class="fecha" aria-label="Sábado 23 de octubre de 2027">
-      <span class="mes">Octubre</span>
-      <span class="lado">Sábado</span>
-      <span class="dia">23</span>
-      <span class="lado ej">12:30 H</span>
-      <span class="anio">2027</span>
-    </div>
-    <div class="cuenta" id="cuenta" aria-label="Cuenta atrás hasta la boda">
-      <div><b id="c-d">–</b><span>Días</span></div>
-      <div><b id="c-h">–</b><span>Horas</span></div>
-      <div><b id="c-m">–</b><span>Minutos</span></div>
-    </div>
-  </header>
+    <!-- ===================== CABECERA ===================== -->
+    <header class="hero">
+      <div class="marco" role="img" aria-label="Espacio para la foto de Marta y Víctor">
+        <span class="marco__mono" aria-hidden="true">M&amp;V</span>
+        <span class="marco__aviso">Aquí irá vuestra foto</span>
+      </div>
+      <h1 class="nombres">Marta &amp; Víctor</h1>
+      <p class="casamos">¡Nos casamos!</p>
+      <div class="fecha" aria-label="Sábado 23 de octubre de 2027">
+        <span class="fecha__mes">Octubre</span>
+        <span class="fecha__lado">Sábado</span>
+        <span class="fecha__dia">23</span>
+        <span class="fecha__lado ej">12:30 H</span>
+        <span class="fecha__anio">2027</span>
+      </div>
+      <div class="cuenta" aria-label="Cuenta atrás hasta la boda">
+        <div><b id="c-dias">–</b><span>Días</span></div>
+        <div><b id="c-horas">–</b><span>Horas</span></div>
+        <div><b id="c-minutos">–</b><span>Minutos</span></div>
+      </div>
+    </header>
 
-  <section class="bloque" id="ceremonia">
-    <h2>Ceremonia</h2>
-    <div class="filete" aria-hidden="true"></div>
-    <p class="lugar ej">Nombre del lugar de la ceremonia</p>
-    <p class="texto ej">Dirección completa, código postal y localidad</p>
-    <p class="texto">a las <span class="ej">12:30 h</span></p>
-    <a class="boton" href="https://www.google.com/maps" target="_blank" rel="noopener">
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M24 44s14-13.2 14-24a14 14 0 1 0-28 0c0 10.8 14 24 14 24z"/><circle cx="24" cy="20" r="5"/></svg>
-      Cómo llegar
-    </a>
-  </section>
+    <!-- ===================== CEREMONIA ===================== -->
+    <section class="bloque" id="ceremonia">
+      <h2>Ceremonia</h2>
+      <div class="filete" aria-hidden="true"></div>
+      <p class="lugar ej">Nombre del lugar de la ceremonia</p>
+      <p class="texto ej">Dirección completa, código postal y localidad</p>
+      <p class="texto">a las <span class="ej">12:30 h</span></p>
+      <a class="boton" href="https://www.google.com/maps" target="_blank" rel="noopener">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M24 44s14-13.2 14-24a14 14 0 1 0-28 0c0 10.8 14 24 14 24z"/><circle cx="24" cy="20" r="5"/></svg>
+        Cómo llegar
+      </a>
+    </section>
 
-  <section class="bloque" id="celebracion">
-    <span class="mancha m-arena" style="width:260px;height:260px;top:40px;right:-160px"></span>
-    <h2>Celebración</h2>
-    <div class="filete" aria-hidden="true"></div>
-    <p class="lugar ej">Nombre de la finca</p>
-    <p class="texto ej">Dirección completa, código postal y localidad</p>
-    <a class="boton" href="https://www.google.com/maps" target="_blank" rel="noopener">
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M24 44s14-13.2 14-24a14 14 0 1 0-28 0c0 10.8 14 24 14 24z"/><circle cx="24" cy="20" r="5"/></svg>
-      Cómo llegar
-    </a>
-  </section>
+    <!-- ===================== CELEBRACIÓN ===================== -->
+    <section class="bloque" id="celebracion">
+      <span class="mancha mancha--arena mancha--celebracion"></span>
+      <h2>Celebración</h2>
+      <div class="filete" aria-hidden="true"></div>
+      <p class="lugar ej">Nombre de la finca</p>
+      <p class="texto ej">Dirección completa, código postal y localidad</p>
+      <a class="boton" href="https://www.google.com/maps" target="_blank" rel="noopener">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M24 44s14-13.2 14-24a14 14 0 1 0-28 0c0 10.8 14 24 14 24z"/><circle cx="24" cy="20" r="5"/></svg>
+        Cómo llegar
+      </a>
+    </section>
 
-  <section class="bloque" id="itinerario">
-    <h2>Itinerario</h2>
-    <div class="filete" aria-hidden="true"></div>
-    <ul class="itinerario">
-      <li><svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="20" cy="30" r="11"/><circle cx="32" cy="30" r="11"/><path d="M17 15l3-5 3 5"/></svg><span><b class="ej">12:30 h</b> · Ceremonia</span></li>
-      <li><svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 10h10l-1 10a4 4 0 0 1-8 0z"/><path d="M19 24v14M14 38h10"/><path d="M30 10h10l-1 10a4 4 0 0 1-8 0z"/><path d="M35 24v14M30 38h10"/></svg><span><b class="ej">13:30 h</b> · Aperitivo</span></li>
-      <li><svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="26" cy="26" r="13"/><circle cx="26" cy="26" r="8"/><path d="M8 12v28M6 12v8a2 2 0 0 0 4 0v-8M44 12c-3 2-3 9 0 11v17"/></svg><span><b class="ej">15:00 h</b> · Banquete</span></li>
-      <li><svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 36V14l18-4v22"/><circle cx="15" cy="36" r="5"/><circle cx="33" cy="32" r="5"/><path d="M42 6l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg><span><b class="ej">18:00 h</b> · Fiesta</span></li>
-      <li><svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M36 30a14 14 0 1 1-14-20 11 11 0 0 0 14 20z"/><path d="M38 10l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"/></svg><span><b class="ej">00:00 h</b> · Fin de fiesta</span></li>
-    </ul>
-  </section>
+    <!-- ===================== ITINERARIO ===================== -->
+    <section class="bloque" id="itinerario">
+      <h2>Itinerario</h2>
+      <div class="filete" aria-hidden="true"></div>
+      <ul class="itinerario">
+        <li>
+          <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="20" cy="30" r="11"/><circle cx="32" cy="30" r="11"/><path d="M17 15l3-5 3 5"/></svg>
+          <span><b class="ej">12:30 h</b> · Ceremonia</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 10h10l-1 10a4 4 0 0 1-8 0z"/><path d="M19 24v14M14 38h10"/><path d="M30 10h10l-1 10a4 4 0 0 1-8 0z"/><path d="M35 24v14M30 38h10"/></svg>
+          <span><b class="ej">13:30 h</b> · Aperitivo</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="26" cy="26" r="13"/><circle cx="26" cy="26" r="8"/><path d="M8 12v28M6 12v8a2 2 0 0 0 4 0v-8M44 12c-3 2-3 9 0 11v17"/></svg>
+          <span><b class="ej">15:00 h</b> · Banquete</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 36V14l18-4v22"/><circle cx="15" cy="36" r="5"/><circle cx="33" cy="32" r="5"/><path d="M42 6l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg>
+          <span><b class="ej">18:00 h</b> · Fiesta</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M36 30a14 14 0 1 1-14-20 11 11 0 0 0 14 20z"/><path d="M38 10l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"/></svg>
+          <span><b class="ej">00:00 h</b> · Fin de fiesta</span>
+        </li>
+      </ul>
+    </section>
 
-  <section class="bloque" id="autobus">
-    <span class="mancha m-salvia" style="width:260px;height:260px;top:10px;left:-170px"></span>
-    <h2>Autobús</h2>
-    <div class="filete" aria-hidden="true"></div>
-    <p class="texto">Habrá autobús de ida y vuelta entre Alcalá y la finca. <span data-tu="Si lo necesitas, indícalo al confirmar tu asistencia." data-vos="Si lo necesitáis, indicadlo al confirmar vuestra asistencia.">Si lo necesitas, indícalo al confirmar tu asistencia.</span></p>
-    <div class="paradas">
-      <div class="parada"><span>Ida · Alcalá → Finca</span><b class="ej">11:45 h</b></div>
-      <div class="parada"><span>Vuelta · Finca → Alcalá</span><b class="ej">00:30 h</b></div>
-    </div>
-  </section>
+    <!-- ===================== AUTOBÚS ===================== -->
+    <section class="bloque" id="autobus">
+      <span class="mancha mancha--salvia mancha--autobus"></span>
+      <h2>Autobús</h2>
+      <div class="filete" aria-hidden="true"></div>
+      <p class="texto">
+        Habrá autobús de ida y vuelta entre Alcalá y la finca.
+        <span data-tu="Si lo necesitas, indícalo al confirmar tu asistencia." data-vos="Si lo necesitáis, indicadlo al confirmar vuestra asistencia.">Si lo necesitas, indícalo al confirmar tu asistencia.</span>
+      </p>
+      <div class="paradas">
+        <div class="parada"><span>Ida · Alcalá → Finca</span><b class="ej">11:45 h</b></div>
+        <div class="parada"><span>Vuelta · Finca → Alcalá</span><b class="ej">00:30 h</b></div>
+      </div>
+    </section>
 
-  <section class="bloque" id="dresscode">
-    <h2>Dress code</h2>
-    <div class="filete" aria-hidden="true"></div>
-    <p class="texto"><span data-tu="Queremos verte espectacular" data-vos="Queremos veros espectaculares">Queremos verte espectacular</span> en este día tan especial.</p>
-    <p class="texto ej">Formal. Tonos tierra, verdes y dorados.</p>
-    <div class="muestras" aria-hidden="true"><i style="background:#c9b48f"></i><i style="background:#a9b9a0"></i><i style="background:#8a7860"></i><i style="background:#e9dfcc"></i></div>
-  </section>
+    <!-- ===================== DRESS CODE ===================== -->
+    <section class="bloque" id="dresscode">
+      <h2>Dress code</h2>
+      <div class="filete" aria-hidden="true"></div>
+      <p class="texto"><span data-tu="Queremos verte espectacular" data-vos="Queremos veros espectaculares">Queremos verte espectacular</span> en este día tan especial.</p>
+      <p class="texto ej">Formal. Tonos tierra, verdes y dorados.</p>
+      <div class="muestras" aria-hidden="true"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div>
+    </section>
 
-  <section class="bloque" id="asistencia">
-    <span class="mancha m-arena" style="width:300px;height:300px;top:20px;right:-170px"></span>
-    <h2>Asistencia</h2>
-    <div class="filete" aria-hidden="true"></div>
-    <p class="texto">Nos hace muchísima ilusión compartir este día <span data-tu="contigo" data-vos="con vosotros">contigo</span>.</p>
-    <p class="texto">Por favor, <span data-tu="confirma tu" data-vos="confirmad vuestra">confirma tu</span> asistencia antes del <span class="ej">1 de septiembre de 2027</span>.</p>
-    <button class="boton" type="button" id="abrir-form">
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 20l18-13 18 13v20a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><path d="M6 20l18 13 18-13"/><path d="M19 22l4 4 7-8"/></svg>
-      Confirmar asistencia
-    </button>
-  </section>
+    <!-- ===================== ASISTENCIA ===================== -->
+    <section class="bloque" id="asistencia">
+      <span class="mancha mancha--arena mancha--asistencia"></span>
+      <h2>Asistencia</h2>
+      <div class="filete" aria-hidden="true"></div>
+      <p class="texto">Nos hace muchísima ilusión compartir este día <span data-tu="contigo" data-vos="con vosotros">contigo</span>.</p>
+      <p class="texto">Por favor, <span data-tu="confirma tu" data-vos="confirmad vuestra">confirma tu</span> asistencia antes del <span class="ej">1 de septiembre de 2027</span>.</p>
+      <button class="boton" type="button" id="abrir-form">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 20l18-13 18 13v20a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><path d="M6 20l18 13 18-13"/><path d="M19 22l4 4 7-8"/></svg>
+        Confirmar asistencia
+      </button>
+    </section>
 
-  <footer>
-    <span class="mono">M&amp;V</span>
-    <small>23 · 10 · 2027</small>
-  </footer>
-</main>
+    <footer class="pie">
+      <span class="pie__mono">M&amp;V</span>
+      <small>23 · 10 · 2027</small>
+    </footer>
+  </main>
 
-<!-- FORMULARIO -->
-<div class="velo" id="velo" hidden>
-  <div class="ficha" role="dialog" aria-modal="true" aria-labelledby="f-titulo">
-    <button class="cerrar" type="button" id="cerrar" aria-label="Cerrar">×</button>
-    <h3 id="f-titulo">Marta &amp; Víctor</h3>
-    <p class="sub">Confirmación de asistencia</p>
+  <!-- ===================== FORMULARIO ===================== -->
+  <div class="velo" id="velo" hidden>
+    <div class="ficha" role="dialog" aria-modal="true" aria-labelledby="f-titulo">
+      <button class="cerrar" type="button" id="cerrar" aria-label="Cerrar">×</button>
+      <h3 id="f-titulo">Marta &amp; Víctor</h3>
+      <p class="ficha__sub">Confirmación de asistencia</p>
 
-    <form id="rsvp" novalidate>
-      <p class="nota" id="ya-resp" hidden></p>
-
-      <fieldset>
-        <legend><span data-tu="¿Vendrás a la boda?" data-vos="¿Vendréis a la boda?">¿Vendrás a la boda?</span> <span class="req">*</span></legend>
-        <div class="opciones">
-          <label><input type="radio" name="asiste" id="asiste-si" value="si"><span data-tu="Sí, allí estaré" data-vos="Sí, allí estaremos">Sí, allí estaré</span></label>
-          <label><input type="radio" name="asiste" id="asiste-no" value="no"><span data-tu="No podré ir" data-vos="No podremos ir">No podré ir</span></label>
-        </div>
-      </fieldset>
-
-      <div id="nombre-box">
-        <label class="t" for="nombre">Nombre y apellidos <span class="req">*</span></label>
-        <input type="text" id="nombre" name="nombre" autocomplete="name">
+      <!-- Sin invitación válida: aviso en lugar del formulario -->
+      <div class="aviso" id="aviso" hidden>
+        <p id="aviso-txt"></p>
+        <button class="enviar" type="button" id="aviso-volver">Volver a la invitación</button>
       </div>
 
-      <div id="si-box" style="display:grid;gap:18px" hidden>
-        <div id="cuantos-box" hidden>
-          <label class="t" for="cuantos">¿Cuántos vais a venir?</label>
-          <select id="cuantos" name="cuantos"></select>
+      <form class="form" id="rsvp" novalidate>
+        <p class="nota" id="ya-resp" hidden></p>
+
+        <fieldset>
+          <legend><span data-tu="¿Vendrás a la boda?" data-vos="¿Vendréis a la boda?">¿Vendrás a la boda?</span> <span class="req">*</span></legend>
+          <div class="opciones">
+            <label><input type="radio" name="asiste" id="asiste-si" value="si"><span data-tu="Sí, allí estaré" data-vos="Sí, allí estaremos">Sí, allí estaré</span></label>
+            <label><input type="radio" name="asiste" id="asiste-no" value="no"><span data-tu="No podré ir" data-vos="No podremos ir">No podré ir</span></label>
+          </div>
+        </fieldset>
+
+        <!-- Solo en modo de prueba (?para=Nombre) -->
+        <div id="nombre-box">
+          <label class="etiqueta" for="nombre">Nombre y apellidos <span class="req">*</span></label>
+          <input type="text" id="nombre" name="nombre" autocomplete="name">
         </div>
 
-        <div id="acomp-q" style="display:grid;gap:18px">
+        <!-- Solo si responde que SÍ viene -->
+        <div class="form__grupo" id="si-box" hidden>
+          <div id="cuantos-box" hidden>
+            <label class="etiqueta" for="cuantos">¿Cuántos vais a venir?</label>
+            <select id="cuantos" name="cuantos"></select>
+          </div>
+
+          <div class="form__grupo" id="acomp-q">
+            <fieldset>
+              <legend>¿Vienes acompañado/a?</legend>
+              <div class="opciones">
+                <label><input type="radio" name="acomp" id="acomp-no" value="no" checked><span>Vengo solo/a</span></label>
+                <label><input type="radio" name="acomp" id="acomp-si" value="si"><span>Con acompañante</span></label>
+              </div>
+            </fieldset>
+            <div id="acomp-box" hidden>
+              <label class="etiqueta" for="acomp-nombre">Nombre del acompañante <span class="req">*</span></label>
+              <input type="text" id="acomp-nombre" name="acomp_nombre">
+            </div>
+          </div>
+
           <fieldset>
-            <legend>¿Vienes acompañado/a?</legend>
+            <legend>Alergias, intolerancias o menú especial</legend>
             <div class="opciones">
-              <label><input type="radio" name="acomp" id="acomp-no" value="no" checked><span>Vengo solo/a</span></label>
-              <label><input type="radio" name="acomp" id="acomp-si" value="si"><span>Con acompañante</span></label>
+              <label><input type="checkbox" name="dieta" id="d-gluten" value="Gluten"><span>Gluten</span></label>
+              <label><input type="checkbox" name="dieta" id="d-lactosa" value="Lactosa"><span>Lactosa</span></label>
+              <label><input type="checkbox" name="dieta" id="d-frutos" value="Frutos secos"><span>Frutos secos</span></label>
+              <label><input type="checkbox" name="dieta" id="d-marisco" value="Marisco"><span>Marisco</span></label>
+              <label><input type="checkbox" name="dieta" id="d-veget" value="Vegetariano"><span>Vegetariano</span></label>
+              <label><input type="checkbox" name="dieta" id="d-vegano" value="Vegano"><span>Vegano</span></label>
+            </div>
+            <input type="text" id="dieta-otra" name="dieta_otra" placeholder="Otra (escríbela aquí)" aria-label="Otra alergia o intolerancia">
+          </fieldset>
+
+          <fieldset>
+            <legend><span data-tu="¿Necesitarás autobús?" data-vos="¿Necesitaréis autobús?">¿Necesitarás autobús?</span> (ida y vuelta Alcalá ⇄ finca)</legend>
+            <div class="opciones">
+              <label><input type="radio" name="bus" id="bus-no" value="no" checked><span data-tu="No, voy en coche" data-vos="No, vamos en coche">No, voy en coche</span></label>
+              <label><input type="radio" name="bus" id="bus-si" value="si"><span data-tu="Sí, quiero autobús" data-vos="Sí, queremos autobús">Sí, quiero autobús</span></label>
             </div>
           </fieldset>
-          <div id="acomp-box" hidden>
-            <label class="t" for="acomp-nombre">Nombre del acompañante <span class="req">*</span></label>
-            <input type="text" id="acomp-nombre" name="acomp_nombre">
-          </div>
         </div>
 
-        <fieldset>
-          <legend>Alergias, intolerancias o menú especial</legend>
-          <div class="opciones">
-            <label><input type="checkbox" name="dieta" id="d-gluten" value="Gluten"><span>Gluten</span></label>
-            <label><input type="checkbox" name="dieta" id="d-lactosa" value="Lactosa"><span>Lactosa</span></label>
-            <label><input type="checkbox" name="dieta" id="d-frutos" value="Frutos secos"><span>Frutos secos</span></label>
-            <label><input type="checkbox" name="dieta" id="d-marisco" value="Marisco"><span>Marisco</span></label>
-            <label><input type="checkbox" name="dieta" id="d-veget" value="Vegetariano"><span>Vegetariano</span></label>
-            <label><input type="checkbox" name="dieta" id="d-vegano" value="Vegano"><span>Vegano</span></label>
-          </div>
-          <input type="text" id="dieta-otra" name="dieta_otra" placeholder="Otra (escríbela aquí)" aria-label="Otra alergia o intolerancia">
-        </fieldset>
+        <div>
+          <label class="etiqueta" for="mensaje"><span data-tu="¿Algo que quieras decirnos?" data-vos="¿Algo que queráis decirnos?">¿Algo que quieras decirnos?</span></label>
+          <textarea id="mensaje" name="mensaje"></textarea>
+        </div>
 
-        <fieldset>
-          <legend><span data-tu="¿Necesitarás autobús?" data-vos="¿Necesitaréis autobús?">¿Necesitarás autobús?</span> (ida y vuelta Alcalá ⇄ finca)</legend>
-          <div class="opciones">
-            <label><input type="radio" name="bus" id="bus-no" value="no" checked><span data-tu="No, voy en coche" data-vos="No, vamos en coche">No, voy en coche</span></label>
-            <label><input type="radio" name="bus" id="bus-si" value="si"><span data-tu="Sí, quiero autobús" data-vos="Sí, queremos autobús">Sí, quiero autobús</span></label>
-          </div>
-        </fieldset>
+        <p class="error" id="error" hidden></p>
+        <button class="enviar" type="submit" id="enviar">Enviar</button>
+        <p class="nota nota--centro" id="nota-demo">Modo de prueba: estas respuestas no se guardan.</p>
+      </form>
+
+      <div class="gracias" id="gracias" hidden>
+        <p id="gracias-txt"></p>
+        <button class="enviar" type="button" id="volver">Volver a la invitación</button>
       </div>
-
-      <div>
-        <label class="t" for="mensaje"><span data-tu="¿Algo que quieras decirnos?" data-vos="¿Algo que queráis decirnos?">¿Algo que quieras decirnos?</span></label>
-        <textarea id="mensaje" name="mensaje"></textarea>
-      </div>
-
-      <p class="error" id="error" hidden></p>
-      <button class="enviar" type="submit" id="enviar">Enviar</button>
-      <p class="nota" id="nota-demo" style="text-align:center">Modo de prueba: estas respuestas no se guardan.</p>
-    </form>
-
-    <div class="gracias" id="gracias" hidden>
-      <p id="gracias-txt">¡Gracias! Hemos recibido tu respuesta.</p>
-      <button class="enviar" type="button" id="cerrar2">Volver a la invitación</button>
     </div>
   </div>
-</div>
 
-<span class="beta" id="beta">Boceto · datos de ejemplo</span>
+  <span class="beta" id="beta">Boceto · datos de ejemplo</span>
 
-<script>
-(function(){
-  // Dirección del Apps Script (Implementar → Aplicación web). Vacía = modo de prueba.
-  var API_URL='https://script.google.com/macros/s/AKfycbwvMHgTlsqs6vXSatfwAsMyOAqrECDeXPWgOsVT9HcIH27rMiwr5aqK4LIlrZTNXjJN/exec';
-  var FECHA_BODA='23 de octubre';
-
-  // ---------- Portada ----------
-  var sobre=document.getElementById('sobre');
-  function abrir(){sobre.classList.add('abierto');sobre.setAttribute('aria-hidden','true');}
-  sobre.addEventListener('click',abrir);
-  sobre.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();abrir();}});
-
-  // ---------- Cuenta atrás (hora de España) ----------
-  var boda=new Date('2027-10-23T12:30:00+02:00').getTime();
-  function tic(){
-    var ms=Math.max(0,boda-Date.now());
-    document.getElementById('c-d').textContent=Math.floor(ms/864e5);
-    document.getElementById('c-h').textContent=Math.floor(ms/36e5)%24;
-    document.getElementById('c-m').textContent=Math.floor(ms/6e4)%60;
-  }
-  tic();setInterval(tic,30000);
-
-  // ---------- Estado ----------
-  // modo: 'demo' (sin código o sin API), 'invitacion' (código válido), 'error' (código no encontrado)
-  var st={modo:'demo',codigo:'',nombre:'Luzmi',trato:'tu',plazas:1,acompanante:true,respuesta:null};
-  var $=function(id){return document.getElementById(id);};
-  var form=$('rsvp'),velo=$('velo'),gracias=$('gracias'),err=$('error');
-
-  function aplicarTrato(){
-    document.querySelectorAll('[data-tu]').forEach(function(el){el.textContent=el.getAttribute(st.trato==='vos'?'data-vos':'data-tu');});
-  }
-  function deducirTrato(n){
-    return (/(^|\s)(y|e)\s|&|,/i.test(n)||/^(familia|los|las|tíos|tios|tías|tias|primos|primas|hermanos|hermanas|abuelos|chicos|chicas)\b/i.test(n))?'vos':'tu';
-  }
-  function pintarSaludo(){
-    $('invitado').textContent=st.nombre;
-    $('saludo').hidden=!st.nombre;
-    $('saludo').classList.remove('cargando');
-    aplicarTrato();
-  }
-  function pintarModo(){
-    var inv=st.modo==='invitacion';
-    $('invitado').classList.toggle('ej',!inv);
-    $('beta').hidden=inv;
-    $('nota-demo').hidden=inv;
-    $('nombre-box').hidden=st.modo!=='demo';
-    $('acomp-q').hidden=!st.acompanante;
-    var sel=$('cuantos'); sel.innerHTML='';
-    for(var n=st.plazas;n>=1;n--){var o=document.createElement('option');o.value=n;o.textContent=n===1?'1 persona':n+' personas';sel.appendChild(o);}
-    $('cuantos-box').hidden=st.plazas<2;
-    if(st.respuesta)rellenar(st.respuesta);
-    sync();
-  }
-  function rellenar(r){
-    $(r.asiste==='No'?'asiste-no':'asiste-si').checked=true;
-    var acomp=!!(r.nombreAcomp&&st.acompanante);
-    $('cuantos').value=String(Math.max(1,Math.min(st.plazas,(r.asistentes||1)-(acomp?1:0))));
-    $(acomp?'acomp-si':'acomp-no').checked=true; $('acomp-nombre').value=r.nombreAcomp||'';
-    var otras=[];
-    String(r.alergias||'').split(',').map(function(x){return x.trim();}).filter(Boolean).forEach(function(a){
-      var cb=form.querySelector('input[name="dieta"][value="'+a.replace(/"/g,'')+'"]');
-      if(cb)cb.checked=true; else otras.push(a);
-    });
-    $('dieta-otra').value=otras.join(', ');
-    $(r.autobus==='Sí'?'bus-si':'bus-no').checked=true;
-    $('mensaje').value=r.mensaje||'';
-    var y=$('ya-resp'), v=st.trato==='vos';
-    y.hidden=false;
-    y.textContent=r.asiste==='No'
-      ?(v?'Nos dijisteis que no podríais venir. Si cambiáis de idea, podéis cambiar vuestra respuesta aquí.':'Nos dijiste que no podrías venir. Si cambias de idea, puedes cambiar tu respuesta aquí.')
-      :(v?'Ya nos confirmasteis vuestra asistencia. Si cambiáis algo, volved a enviarlo.':'Ya nos confirmaste tu asistencia. Si cambias algo, vuelve a enviarlo.');
-    $('enviar').textContent='Guardar cambios';
-    sync();
-  }
-
-  // ---------- Carga de la invitación ----------
-  var sp; try{sp=new URLSearchParams(location.search);}catch(e){sp={get:function(){return null;}};}
-  st.codigo=(sp.get('i')||'').trim().toLowerCase();
-  if(st.codigo&&API_URL){
-    $('saludo').classList.add('cargando');
-    fetch(API_URL+'?i='+encodeURIComponent(st.codigo)+(sp.get('prueba')?'&prueba=1':''))
-      .then(function(r){return r.json();})
-      .then(function(d){
-        if(!d.ok){st.modo='error';st.nombre='';st.acompanante=false;}
-        else{st.modo='invitacion';st.nombre=d.nombre;st.trato=d.trato;st.plazas=d.plazas;st.acompanante=d.acompanante;st.respuesta=d.respuesta;}
-      })
-      .catch(function(){st.modo='error';st.nombre='';})
-      .then(function(){pintarSaludo();pintarModo();});
-  }else{
-    // Modo de prueba: ?para=Nombre y opcionalmente &trato=tu|vos
-    var q=sp.get('para')||(location.hash?decodeURIComponent(location.hash.slice(1)).replace(/[-_]/g,' '):'');
-    if(q&&q.trim())st.nombre=q.trim();
-    var t=(sp.get('trato')||'').toLowerCase();
-    st.trato=(t==='tu'||t==='vos')?t:deducirTrato(st.nombre);
-    pintarSaludo();pintarModo();
-  }
-
-  // ---------- Formulario ----------
-  function show(){velo.hidden=false;document.body.style.overflow='hidden';}
-  function hide(){velo.hidden=true;document.body.style.overflow='';}
-  $('abrir-form').addEventListener('click',show);
-  $('cerrar').addEventListener('click',hide);
-  $('cerrar2').addEventListener('click',function(){hide();form.hidden=false;gracias.hidden=true;});
-  velo.addEventListener('click',function(e){if(e.target===velo)hide();});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!velo.hidden)hide();});
-
-  function val(n){var el=form.querySelector('input[name="'+n+'"]:checked');return el?el.value:'';}
-  function sync(){
-    $('si-box').hidden=val('asiste')!=='si';
-    $('acomp-box').hidden=!st.acompanante||val('acomp')!=='si';
-  }
-  form.addEventListener('change',sync);
-
-  function fallo(t){err.textContent=t;err.hidden=false;}
-
-  form.addEventListener('submit',function(e){
-    e.preventDefault(); err.hidden=true;
-    if(st.modo==='error'){fallo('No encontramos tu invitación. Revisa que el enlace esté completo o escríbenos.');return;}
-    if(st.modo==='demo'&&!$('nombre').value.trim()){fallo('Falta indicar tu nombre.');return;}
-    if(!val('asiste')){fallo(st.trato==='vos'?'Indicadnos si vendréis a la boda.':'Indícanos si vendrás a la boda.');return;}
-    var viene=val('asiste')==='si';
-    var conAcomp=viene&&st.acompanante&&val('acomp')==='si';
-    if(conAcomp&&!$('acomp-nombre').value.trim()){fallo('Falta el nombre de tu acompañante.');return;}
-
-    var dieta=[].slice.call(form.querySelectorAll('input[name="dieta"]:checked')).map(function(c){return c.value;});
-    if($('dieta-otra').value.trim())dieta.push($('dieta-otra').value.trim());
-    var datos={
-      i:st.codigo,
-      asiste:viene?'Sí':'No',
-      asistentes:!viene?0:(st.plazas>1?Number($('cuantos').value):1),
-      nombreAcomp:conAcomp?$('acomp-nombre').value.trim():'',
-      alergias:viene?dieta.join(', '):'',
-      autobus:!viene?'':(val('bus')==='si'?'Sí':'No'),
-      mensaje:$('mensaje').value.trim()
-    };
-    var nombreGracias=st.modo==='demo'?$('nombre').value.trim().split(' ')[0]:st.nombre;
-    function mensajeGracias(tipo,anterior){
-      var v=st.trato==='vos', N=nombreGracias, te=v?'Os':'Te', fecha=' el '+FECHA_BODA+'.';
-      if(tipo==='sin_cambios')return (v?'Vuestra':'Tu')+' respuesta ya estaba guardada tal cual, '+N+'. No había nada que cambiar.';
-      if(tipo==='primera')return viene?'¡Qué alegría, '+N+'! '+te+' esperamos'+fecha
-                                       :'Gracias por avisarnos, '+N+'. '+te+' echaremos de menos.';
-      if(anterior==='No'&&viene)return '¡Qué alegría que al final '+(v?'podáis':'puedas')+' venir, '+N+'! '+te+' esperamos'+fecha;
-      if(anterior==='Sí'&&!viene)return 'Gracias por avisarnos del cambio, '+N+'. Sentimos que al final no '+(v?'podáis':'puedas')+' venir; '+te.toLowerCase()+' echaremos de menos.';
-      return '¡Gracias por actualizar '+(v?'vuestra':'tu')+' respuesta, '+N+'! Hemos guardado los cambios.'+(viene?' '+te+' esperamos'+fecha:'');
-    }
-    function ok(tipo,anterior){
-      if(tipo!=='sin_cambios')st.respuesta={asiste:datos.asiste,asistentes:datos.asistentes+(datos.nombreAcomp?1:0),nombreAcomp:datos.nombreAcomp,alergias:datos.alergias,autobus:datos.autobus,mensaje:datos.mensaje};
-      $('gracias-txt').textContent=mensajeGracias(tipo,anterior);
-      form.hidden=true;gracias.hidden=false;
-      rellenar(st.respuesta);
-    }
-    if(st.modo==='demo'){
-      var ant=st.respuesta?st.respuesta.asiste:'';
-      ok(st.respuesta?'modificacion':'primera',ant);return;
-    }
-
-    var btn=$('enviar'); btn.disabled=true; btn.textContent='Enviando…';
-    fetch(API_URL,{method:'POST',body:JSON.stringify(datos)})
-      .then(function(r){return r.json();})
-      .then(function(d){if(!d.ok)throw new Error();ok(d.tipo||'primera',d.anterior||'');})
-      .catch(function(){fallo('No se ha podido enviar. Comprueba tu conexión e inténtalo de nuevo.');})
-      .then(function(){btn.disabled=false;btn.textContent=st.respuesta?'Guardar cambios':'Enviar';});
-  });
-})();
-</script>
 </body>
 </html>
