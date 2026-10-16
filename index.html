@@ -13,10 +13,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Jost:wght@400;500&display=swap">
 
   <!-- Al cambiar CSS o JS, sube el número de ?v= para que los navegadores no usen la copia antigua -->
-  <link rel="stylesheet" href="css/base.css?v=1">
-  <link rel="stylesheet" href="css/invitacion.css?v=1">
-  <link rel="stylesheet" href="css/formulario.css?v=1">
-  <script type="module" src="js/main.js?v=1"></script>
+  <link rel="stylesheet" href="css/base.css?v=2">
+  <link rel="stylesheet" href="css/invitacion.css?v=2">
+  <link rel="stylesheet" href="css/formulario.css?v=2">
+  <script type="module" src="js/main.js?v=2"></script>
 </head>
 <body>
 
@@ -164,6 +164,12 @@
       <h3 id="f-titulo">Marta &amp; Víctor</h3>
       <p class="ficha__sub">Confirmación de asistencia</p>
 
+      <!-- Sin invitación válida: aviso en lugar del formulario -->
+      <div class="aviso" id="aviso" hidden>
+        <p id="aviso-txt"></p>
+        <button class="enviar" type="button" id="aviso-volver">Volver a la invitación</button>
+      </div>
+
       <form class="form" id="rsvp" novalidate>
         <p class="nota" id="ya-resp" hidden></p>
 
@@ -175,7 +181,7 @@
           </div>
         </fieldset>
 
-        <!-- Solo en modo de prueba (sin código de invitación) -->
+        <!-- Solo en modo de prueba (?para=Nombre) -->
         <div id="nombre-box">
           <label class="etiqueta" for="nombre">Nombre y apellidos <span class="req">*</span></label>
           <input type="text" id="nombre" name="nombre" autocomplete="name">

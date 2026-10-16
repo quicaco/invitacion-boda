@@ -50,8 +50,21 @@ export function avisoYaRespondido({ trato, asiste }) {
     'Ya nos confirmasteis vuestra asistencia. Si cambiáis algo, volved a enviarlo.');
 }
 
+/** Aviso que sustituye al formulario cuando no hay una invitación válida. */
+export function avisoSinInvitacion(motivo) {
+  const comoConfirmar =
+    'Para confirmar tu asistencia necesitas el enlace personal que te enviamos por WhatsApp. ' +
+    'Ábrelo desde el mensaje y podrás confirmar aquí. Si no lo encuentras, escríbenos.';
+  if (motivo === 'conexion') {
+    return 'No hemos podido cargar tu invitación. Comprueba tu conexión y vuelve a cargar la página.';
+  }
+  if (motivo === 'no_encontrada') {
+    return `Este enlace no es válido o está incompleto. ${comoConfirmar}`;
+  }
+  return comoConfirmar;
+}
+
 export const ERRORES = {
-  invitacionNoEncontrada: 'No encontramos tu invitación. Revisa que el enlace esté completo o escríbenos.',
   faltaNombre: 'Falta indicar tu nombre.',
   faltaAsiste: (trato) => t(trato, 'Indícanos si vendrás a la boda.', 'Indicadnos si vendréis a la boda.'),
   faltaAcompanante: 'Falta el nombre de tu acompañante.',

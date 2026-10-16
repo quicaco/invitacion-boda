@@ -5,10 +5,11 @@
  *   ?i=CODIGO            invitación real (datos de la hoja)
  *   ?i=CODIGO&prueba=1   igual, pero sin apuntar la apertura en la hoja
  *   ?para=Nombre         modo de prueba con ese nombre (&trato=tu|vos para forzarlo)
+ *   (sin nada)           se ve la información, pero para confirmar hace falta el enlace personal
  */
 import { BODA } from './config.js';
 import { estado } from './estado.js';
-import { hayApi, obtenerInvitacion } from './api.js';
+import { hayApi, obtenerInvitacion, InvitacionNoEncontrada } from './api.js';
 import { deducirTrato, aplicarTrato } from './trato.js';
 import { iniciarPortada, saludoCargando, pintarSaludo } from './portada.js';
 import { iniciarCuentaAtras } from './cuenta-atras.js';
@@ -32,12 +33,17 @@ async function cargarInvitacion(parametros) {
       acompanante: d.acompanante,
       respuesta: d.respuesta,
     });
-  } catch {
-    Object.assign(estado, { modo: 'error', nombre: '', acompanante: false });
+  } catch (error) {
+    Object.assign(estado, {
+      modo: 'sin_invitacion',
+      motivo: error instanceof InvitacionNoEncontrada ? 'no_encontrada' : 'conexion',
+      nombre: '',
+    });
   }
 }
 
 function cargarDemo(parametros) {
+  estado.modo = 'demo';
   const nombre = (parametros.get('para') || '').trim();
   if (nombre) estado.nombre = nombre;
   const trato = (parametros.get('trato') || '').toLowerCase();
@@ -52,8 +58,14 @@ async function iniciar() {
   const parametros = new URLSearchParams(location.search);
   estado.codigo = (parametros.get('i') || '').trim().toLowerCase();
 
-  if (estado.codigo && hayApi()) await cargarInvitacion(parametros);
-  else cargarDemo(parametros);
+  if (estado.codigo && hayApi()) {
+    await cargarInvitacion(parametros);
+  } else if (parametros.has('para') || !hayApi()) {
+    cargarDemo(parametros);
+  } else {
+    // Sin código: se ve la información, pero no se puede confirmar
+    Object.assign(estado, { modo: 'sin_invitacion', motivo: estado.codigo ? 'no_encontrada' : 'sin_codigo', nombre: '' });
+  }
 
   pintar();
 }

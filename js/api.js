@@ -11,12 +11,16 @@ import { API_URL } from './config.js';
 
 export const hayApi = () => Boolean(API_URL);
 
-/** Datos de una invitación. Lanza un error si no existe o falla la conexión. */
+/** Error cuando el código no corresponde a ninguna invitación. */
+export class InvitacionNoEncontrada extends Error {}
+
+/** Datos de una invitación.
+ *  Lanza InvitacionNoEncontrada si el código no existe, u otro Error si falla la conexión. */
 export async function obtenerInvitacion(codigo, { prueba = false } = {}) {
   const url = `${API_URL}?i=${encodeURIComponent(codigo)}${prueba ? '&prueba=1' : ''}`;
   const respuesta = await fetch(url);
   const datos = await respuesta.json();
-  if (!datos.ok) throw new Error('Invitación no encontrada');
+  if (!datos.ok) throw new InvitacionNoEncontrada(codigo);
   return datos;
 }
 

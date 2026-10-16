@@ -4,13 +4,19 @@
  */
 import { estado, $ } from './estado.js';
 import { enviarRespuesta } from './api.js';
-import { mensajeGracias, avisoYaRespondido, ERRORES } from './mensajes.js';
+import { mensajeGracias, avisoYaRespondido, avisoSinInvitacion, ERRORES } from './mensajes.js';
 
 const form = () => $('rsvp');
 
 /* ---------- Abrir / cerrar ---------- */
 
+const puedeConfirmar = () => estado.modo === 'invitacion' || estado.modo === 'demo';
+
 function mostrar() {
+  // Sin invitación válida se muestra un aviso en lugar del formulario
+  $('aviso').hidden = puedeConfirmar();
+  $('aviso-txt').textContent = avisoSinInvitacion(estado.motivo);
+  form().hidden = !puedeConfirmar() || !$('gracias').hidden;
   $('velo').hidden = false;
   document.body.style.overflow = 'hidden';
 }
@@ -43,9 +49,9 @@ function mostrarError(texto) {
 
 /** Ajusta el formulario a la invitación cargada (plazas, acompañante, modo). */
 export function prepararFormulario() {
-  const esInvitacion = estado.modo === 'invitacion';
-  $('beta').hidden = esInvitacion;
-  $('nota-demo').hidden = esInvitacion;
+  const esDemo = estado.modo === 'demo';
+  $('beta').hidden = !esDemo;
+  $('nota-demo').hidden = !esDemo;
   $('nombre-box').hidden = estado.modo !== 'demo';
   $('acomp-q').hidden = !estado.acompanante;
 
@@ -92,7 +98,7 @@ function rellenar(r) {
 
 /** Devuelve { datos } listos para enviar, o { error } con el texto a mostrar. */
 function leerFormulario() {
-  if (estado.modo === 'error') return { error: ERRORES.invitacionNoEncontrada };
+  if (!puedeConfirmar()) return { error: avisoSinInvitacion(estado.motivo) };
   if (estado.modo === 'demo' && !$('nombre').value.trim()) return { error: ERRORES.faltaNombre };
   if (!marcado('asiste')) return { error: ERRORES.faltaAsiste(estado.trato) };
 
@@ -176,6 +182,7 @@ export function iniciarFormulario() {
     form().hidden = false;
     $('gracias').hidden = true;
   });
+  $('aviso-volver').addEventListener('click', ocultar);
   $('velo').addEventListener('click', (e) => { if (e.target === $('velo')) ocultar(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('velo').hidden) ocultar(); });
 

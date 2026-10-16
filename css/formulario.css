@@ -105,6 +105,10 @@ textarea { min-height: 76px; resize: vertical; }
 .enviar:hover { background: var(--oro-oscuro); }
 .enviar:disabled { opacity: .7; cursor: default; }
 
+/* ---------- Aviso sin invitación ---------- */
+.aviso { text-align: center; display: grid; gap: 16px; padding: 8px 0; }
+.aviso p { font-family: var(--display); font-size: 19px; line-height: 1.5; }
+
 /* ---------- Agradecimiento ---------- */
 .gracias { text-align: center; display: grid; gap: 12px; padding: 12px 0; }
 .gracias p { font-family: var(--display); font-size: 20px; }
