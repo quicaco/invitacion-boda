@@ -258,12 +258,20 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
     <form id="rsvp" novalidate>
       <p class="nota" id="ya-resp" hidden></p>
 
+      <fieldset>
+        <legend><span data-tu="¿Vendrás a la boda?" data-vos="¿Vendréis a la boda?">¿Vendrás a la boda?</span> <span class="req">*</span></legend>
+        <div class="opciones">
+          <label><input type="radio" name="asiste" id="asiste-si" value="si"><span data-tu="Sí, allí estaré" data-vos="Sí, allí estaremos">Sí, allí estaré</span></label>
+          <label><input type="radio" name="asiste" id="asiste-no" value="no"><span data-tu="No podré ir" data-vos="No podremos ir">No podré ir</span></label>
+        </div>
+      </fieldset>
+
       <div id="nombre-box">
         <label class="t" for="nombre">Nombre y apellidos <span class="req">*</span></label>
         <input type="text" id="nombre" name="nombre" autocomplete="name">
       </div>
 
-      <div style="display:grid;gap:18px">
+      <div id="si-box" style="display:grid;gap:18px" hidden>
         <div id="cuantos-box" hidden>
           <label class="t" for="cuantos">¿Cuántos vais a venir?</label>
           <select id="cuantos" name="cuantos"></select>
@@ -378,6 +386,7 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
     sync();
   }
   function rellenar(r){
+    $(r.asiste==='No'?'asiste-no':'asiste-si').checked=true;
     var acomp=!!(r.nombreAcomp&&st.acompanante);
     $('cuantos').value=String(Math.max(1,Math.min(st.plazas,(r.asistentes||1)-(acomp?1:0))));
     $(acomp?'acomp-si':'acomp-no').checked=true; $('acomp-nombre').value=r.nombreAcomp||'';
@@ -389,8 +398,13 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
     $('dieta-otra').value=otras.join(', ');
     $(r.autobus==='Sí'?'bus-si':'bus-no').checked=true;
     $('mensaje').value=r.mensaje||'';
-    var y=$('ya-resp'); y.hidden=false;
-    y.textContent=st.trato==='vos'?'Ya nos confirmasteis vuestra asistencia. Si cambiáis algo, volved a enviarlo.':'Ya nos confirmaste tu asistencia. Si cambias algo, vuelve a enviarlo.';
+    var y=$('ya-resp'), v=st.trato==='vos';
+    y.hidden=false;
+    y.textContent=r.asiste==='No'
+      ?(v?'Nos dijisteis que no podríais venir. Si cambiáis de idea, podéis cambiar vuestra respuesta aquí.':'Nos dijiste que no podrías venir. Si cambias de idea, puedes cambiar tu respuesta aquí.')
+      :(v?'Ya nos confirmasteis vuestra asistencia. Si cambiáis algo, volved a enviarlo.':'Ya nos confirmaste tu asistencia. Si cambias algo, vuelve a enviarlo.');
+    $('enviar').textContent='Guardar cambios';
+    sync();
   }
 
   // ---------- Carga de la invitación ----------
@@ -425,7 +439,10 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!velo.hidden)hide();});
 
   function val(n){var el=form.querySelector('input[name="'+n+'"]:checked');return el?el.value:'';}
-  function sync(){$('acomp-box').hidden=!st.acompanante||val('acomp')!=='si';}
+  function sync(){
+    $('si-box').hidden=val('asiste')!=='si';
+    $('acomp-box').hidden=!st.acompanante||val('acomp')!=='si';
+  }
   form.addEventListener('change',sync);
 
   function fallo(t){err.textContent=t;err.hidden=false;}
@@ -434,36 +451,49 @@ footer small{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:upp
     e.preventDefault(); err.hidden=true;
     if(st.modo==='error'){fallo('No encontramos tu invitación. Revisa que el enlace esté completo o escríbenos.');return;}
     if(st.modo==='demo'&&!$('nombre').value.trim()){fallo('Falta indicar tu nombre.');return;}
-    var conAcomp=st.acompanante&&val('acomp')==='si';
+    if(!val('asiste')){fallo(st.trato==='vos'?'Indicadnos si vendréis a la boda.':'Indícanos si vendrás a la boda.');return;}
+    var viene=val('asiste')==='si';
+    var conAcomp=viene&&st.acompanante&&val('acomp')==='si';
     if(conAcomp&&!$('acomp-nombre').value.trim()){fallo('Falta el nombre de tu acompañante.');return;}
 
     var dieta=[].slice.call(form.querySelectorAll('input[name="dieta"]:checked')).map(function(c){return c.value;});
     if($('dieta-otra').value.trim())dieta.push($('dieta-otra').value.trim());
     var datos={
       i:st.codigo,
-      asistentes:st.plazas>1?Number($('cuantos').value):1,
+      asiste:viene?'Sí':'No',
+      asistentes:!viene?0:(st.plazas>1?Number($('cuantos').value):1),
       nombreAcomp:conAcomp?$('acomp-nombre').value.trim():'',
-      alergias:dieta.join(', '),
-      autobus:val('bus')==='si'?'Sí':'No',
+      alergias:viene?dieta.join(', '):'',
+      autobus:!viene?'':(val('bus')==='si'?'Sí':'No'),
       mensaje:$('mensaje').value.trim()
     };
     var nombreGracias=st.modo==='demo'?$('nombre').value.trim().split(' ')[0]:st.nombre;
-    function ok(){
-      st.respuesta={asistentes:datos.asistentes+(datos.nombreAcomp?1:0),nombreAcomp:datos.nombreAcomp,alergias:datos.alergias,autobus:datos.autobus,mensaje:datos.mensaje};
-      $('gracias-txt').textContent=st.trato==='vos'
-        ?'¡Qué alegría, '+nombreGracias+'! Os esperamos el '+FECHA_BODA+'.'
-        :'¡Qué alegría, '+nombreGracias+'! Te esperamos el '+FECHA_BODA+'.';
-      form.hidden=true;gracias.hidden=false;
-      if(st.modo==='invitacion')rellenar(st.respuesta);
+    function mensajeGracias(tipo,anterior){
+      var v=st.trato==='vos', N=nombreGracias, te=v?'Os':'Te', fecha=' el '+FECHA_BODA+'.';
+      if(tipo==='sin_cambios')return (v?'Vuestra':'Tu')+' respuesta ya estaba guardada tal cual, '+N+'. No había nada que cambiar.';
+      if(tipo==='primera')return viene?'¡Qué alegría, '+N+'! '+te+' esperamos'+fecha
+                                       :'Gracias por avisarnos, '+N+'. '+te+' echaremos de menos.';
+      if(anterior==='No'&&viene)return '¡Qué alegría que al final '+(v?'podáis':'puedas')+' venir, '+N+'! '+te+' esperamos'+fecha;
+      if(anterior==='Sí'&&!viene)return 'Gracias por avisarnos del cambio, '+N+'. Sentimos que al final no '+(v?'podáis':'puedas')+' venir; '+te.toLowerCase()+' echaremos de menos.';
+      return '¡Gracias por actualizar '+(v?'vuestra':'tu')+' respuesta, '+N+'! Hemos guardado los cambios.'+(viene?' '+te+' esperamos'+fecha:'');
     }
-    if(st.modo==='demo'){ok();return;}
+    function ok(tipo,anterior){
+      if(tipo!=='sin_cambios')st.respuesta={asiste:datos.asiste,asistentes:datos.asistentes+(datos.nombreAcomp?1:0),nombreAcomp:datos.nombreAcomp,alergias:datos.alergias,autobus:datos.autobus,mensaje:datos.mensaje};
+      $('gracias-txt').textContent=mensajeGracias(tipo,anterior);
+      form.hidden=true;gracias.hidden=false;
+      rellenar(st.respuesta);
+    }
+    if(st.modo==='demo'){
+      var ant=st.respuesta?st.respuesta.asiste:'';
+      ok(st.respuesta?'modificacion':'primera',ant);return;
+    }
 
     var btn=$('enviar'); btn.disabled=true; btn.textContent='Enviando…';
     fetch(API_URL,{method:'POST',body:JSON.stringify(datos)})
       .then(function(r){return r.json();})
-      .then(function(d){if(!d.ok)throw new Error();ok();})
+      .then(function(d){if(!d.ok)throw new Error();ok(d.tipo||'primera',d.anterior||'');})
       .catch(function(){fallo('No se ha podido enviar. Comprueba tu conexión e inténtalo de nuevo.');})
-      .then(function(){btn.disabled=false;btn.textContent='Enviar';});
+      .then(function(){btn.disabled=false;btn.textContent=st.respuesta?'Guardar cambios':'Enviar';});
   });
 })();
 </script>
