@@ -10,19 +10,38 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Jost:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Parisienne&family=Jost:wght@400;500&display=swap">
+
+  <!-- Diseño alternativo: ?tema=b. Se aplica antes de pintar para que no parpadee -->
+  <script>
+    (function () {
+      try {
+        if (new URLSearchParams(location.search).get('tema') === 'b') {
+          document.documentElement.setAttribute('data-tema', 'b');
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- Al cambiar CSS o JS, sube el número de ?v= para que los navegadores no usen la copia antigua -->
-  <link rel="stylesheet" href="css/base.css?v=3">
-  <link rel="stylesheet" href="css/invitacion.css?v=3">
-  <link rel="stylesheet" href="css/formulario.css?v=3">
-  <script type="module" src="js/main.js?v=3"></script>
+  <link rel="stylesheet" href="css/base.css?v=4">
+  <link rel="stylesheet" href="css/invitacion.css?v=4">
+  <link rel="stylesheet" href="css/formulario.css?v=4">
+  <link rel="stylesheet" href="css/tema-b.css?v=4">
+  <script type="module" src="js/main.js?v=4"></script>
 </head>
 <body>
 
   <!-- ===================== PORTADA (sobre) ===================== -->
   <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la invitación" aria-busy="true">
     <div class="sobre__contenido">
+      <svg class="ilus ilus--portada solo-b" viewBox="0 0 160 112" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <g transform="rotate(-14 62 70)"><path d="M38 44h40c0 15-9 23-20 23s-20-8-20-23z"/><path d="M41 50h34"/><path d="M58 67v26M46 95h24"/><circle cx="52" cy="56" r="1.2"/><circle cx="62" cy="59" r="1.2"/><circle cx="57" cy="52" r="1"/></g>
+        <g transform="rotate(14 98 70)"><path d="M82 44h40c0 15-9 23-20 23s-20-8-20-23z"/><path d="M85 50h34"/><path d="M102 67v26M90 95h24"/><circle cx="96" cy="57" r="1.2"/><circle cx="106" cy="54" r="1"/></g>
+        <path d="M80 10l2.6 6.4 6.4 2.6-6.4 2.6L80 28l-2.6-6.4-6.4-2.6 6.4-2.6z"/><path d="M62 18l1.4 3.4 3.4 1.4-3.4 1.4L62 28l-1.4-3.4-3.4-1.4 3.4-1.4z"/><path d="M100 20l1.4 3.4 3.4 1.4-3.4 1.4-1.4 3.4-1.4-3.4-3.4-1.4 3.4-1.4z"/>
+        <path d="M70 34c3-3 7-3 10 0M80 34c3-3 7-3 10 0"/>
+      </svg>
+      <p class="sobre__casamos solo-b">¡nos casamos!</p>
       <p class="sobre__frase" id="sobre-frase">
         Dicen que en martes,<br>ni te cases ni te embarques…<br>Nosotros lo hacemos en sábado.<br>
         Ya lo <span data-tu="sabes" data-vos="sabéis">sabes</span><span id="saludo">, <b class="ej" id="invitado">Luzmi</b></span>.
@@ -67,28 +86,65 @@
 
     <!-- ===================== CEREMONIA ===================== -->
     <section class="bloque" id="ceremonia">
-      <h2>Ceremonia</h2>
+      <h2 class="solo-a">Ceremonia</h2>
+      <h2 class="solo-b">¿Dónde será?</h2>
+      <p class="pista solo-b">Toca cada tarjeta para ver los detalles</p>
       <div class="filete" aria-hidden="true"></div>
-      <p class="lugar ej">Nombre del lugar de la ceremonia</p>
-      <p class="texto ej">Dirección completa, código postal y localidad</p>
-      <p class="texto">a las <span class="ej">12:30 h</span></p>
-      <a class="boton" href="https://www.google.com/maps" target="_blank" rel="noopener">
-        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M24 44s14-13.2 14-24a14 14 0 1 0-28 0c0 10.8 14 24 14 24z"/><circle cx="24" cy="20" r="5"/></svg>
-        Cómo llegar
-      </a>
+      <!-- En el tema B es una tarjeta que se gira; en el A, «tarjeta» no afecta a la maquetación -->
+      <div class="tarjeta" data-tarjeta>
+        <div class="tarjeta__interior">
+          <button class="tarjeta__frente solo-b" type="button" aria-expanded="false" aria-label="Ver los detalles de la ceremonia">
+            <svg class="ilus ilus--tarjeta" viewBox="0 0 120 110" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 102h104"/><path d="M33 102V60l27-22 27 22v42"/><path d="M53 38V24h14v14"/><path d="M60 24V10M55 15h10"/><path d="M57 31a3 3 0 0 1 6 0v3h-6z"/>
+              <path d="M50 102V82a10 10 0 0 1 20 0v20"/><path d="M60 72v0"/><circle cx="60" cy="62" r="6"/><path d="M54 62h12M60 56v12"/>
+              <path d="M40 72v10h6V72a3 3 0 0 0-6 0zM74 72v10h6V72a3 3 0 0 0-6 0z"/>
+              <path d="M18 102c-5-9-5-26 3-38 8 12 8 29 3 38M21 64v38"/><path d="M99 102c-5-9-5-26 3-38 8 12 8 29 3 38M102 64v38"/>
+            </svg>
+            <span class="tarjeta__titulo">Ceremonia</span>
+            <span class="tarjeta__hora ej">12:30 h</span>
+          </button>
+          <div class="tarjeta__dorso">
+            <p class="tarjeta__titulo solo-b">Ceremonia</p>
+            <p class="lugar ej">Nombre del lugar de la ceremonia</p>
+            <p class="texto ej">Dirección completa, código postal y localidad</p>
+            <p class="texto">a las <span class="ej">12:30 h</span></p>
+            <a class="boton" href="https://www.google.com/maps" target="_blank" rel="noopener">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M24 44s14-13.2 14-24a14 14 0 1 0-28 0c0 10.8 14 24 14 24z"/><circle cx="24" cy="20" r="5"/></svg>
+              Cómo llegar
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ===================== CELEBRACIÓN ===================== -->
     <section class="bloque" id="celebracion">
       <span class="mancha mancha--arena mancha--celebracion"></span>
-      <h2>Celebración</h2>
+      <h2 class="solo-a">Celebración</h2>
       <div class="filete" aria-hidden="true"></div>
-      <p class="lugar ej">Nombre de la finca</p>
-      <p class="texto ej">Dirección completa, código postal y localidad</p>
-      <a class="boton" href="https://www.google.com/maps" target="_blank" rel="noopener">
-        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M24 44s14-13.2 14-24a14 14 0 1 0-28 0c0 10.8 14 24 14 24z"/><circle cx="24" cy="20" r="5"/></svg>
-        Cómo llegar
-      </a>
+      <div class="tarjeta" data-tarjeta>
+        <div class="tarjeta__interior">
+          <button class="tarjeta__frente solo-b" type="button" aria-expanded="false" aria-label="Ver los detalles de la celebración">
+            <svg class="ilus ilus--tarjeta" viewBox="0 0 120 110" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 102h112"/><path d="M12 102V64h76v38"/><path d="M8 64l8-11h68l8 11"/><path d="M20 53l2-4M34 53l2-4M48 53l2-4M62 53l2-4M76 53l2-4"/>
+              <path d="M20 102V86a7 7 0 0 1 14 0v16M43 102V86a7 7 0 0 1 14 0v16M66 102V86a7 7 0 0 1 14 0v16"/>
+              <path d="M22 70h8v7h-8zM46 70h8v7h-8zM70 70h8v7h-8z"/><path d="M42 53V44h16v9"/><path d="M47 44v-5h6v5"/>
+              <path d="M102 102V78"/><path d="M102 82c-8-2-14-8-12-16 2-7 8-8 12-5 3-6 11-5 13 1 3 7-2 15-13 20z"/><path d="M98 70c2 2 5 3 8 2M104 66c1 3 0 5-2 6"/>
+            </svg>
+            <span class="tarjeta__titulo">Celebración</span>
+            <span class="tarjeta__hora ej">13:30 h</span>
+          </button>
+          <div class="tarjeta__dorso">
+            <p class="tarjeta__titulo solo-b">Celebración</p>
+            <p class="lugar ej">Nombre de la finca</p>
+            <p class="texto ej">Dirección completa, código postal y localidad</p>
+            <a class="boton" href="https://www.google.com/maps" target="_blank" rel="noopener">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M24 44s14-13.2 14-24a14 14 0 1 0-28 0c0 10.8 14 24 14 24z"/><circle cx="24" cy="20" r="5"/></svg>
+              Cómo llegar
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ===================== ITINERARIO ===================== -->
@@ -98,23 +154,23 @@
       <ul class="itinerario">
         <li>
           <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="20" cy="30" r="11"/><circle cx="32" cy="30" r="11"/><path d="M17 15l3-5 3 5"/></svg>
-          <span><b class="ej">12:30 h</b> · Ceremonia</span>
+          <span class="itin"><b class="ej">12:30 h</b><span class="itin__sep"> · </span><span class="itin__nombre">Ceremonia</span></span>
         </li>
         <li>
           <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 10h10l-1 10a4 4 0 0 1-8 0z"/><path d="M19 24v14M14 38h10"/><path d="M30 10h10l-1 10a4 4 0 0 1-8 0z"/><path d="M35 24v14M30 38h10"/></svg>
-          <span><b class="ej">13:30 h</b> · Aperitivo</span>
+          <span class="itin"><b class="ej">13:30 h</b><span class="itin__sep"> · </span><span class="itin__nombre">Aperitivo</span></span>
         </li>
         <li>
           <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="26" cy="26" r="13"/><circle cx="26" cy="26" r="8"/><path d="M8 12v28M6 12v8a2 2 0 0 0 4 0v-8M44 12c-3 2-3 9 0 11v17"/></svg>
-          <span><b class="ej">15:00 h</b> · Banquete</span>
+          <span class="itin"><b class="ej">15:00 h</b><span class="itin__sep"> · </span><span class="itin__nombre">Banquete</span></span>
         </li>
         <li>
           <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 36V14l18-4v22"/><circle cx="15" cy="36" r="5"/><circle cx="33" cy="32" r="5"/><path d="M42 6l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg>
-          <span><b class="ej">18:00 h</b> · Fiesta</span>
+          <span class="itin"><b class="ej">18:00 h</b><span class="itin__sep"> · </span><span class="itin__nombre">Fiesta</span></span>
         </li>
         <li>
           <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M36 30a14 14 0 1 1-14-20 11 11 0 0 0 14 20z"/><path d="M38 10l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"/></svg>
-          <span><b class="ej">00:00 h</b> · Fin de fiesta</span>
+          <span class="itin"><b class="ej">00:00 h</b><span class="itin__sep"> · </span><span class="itin__nombre">Fin de fiesta</span></span>
         </li>
       </ul>
     </section>
@@ -148,6 +204,11 @@
       <span class="mancha mancha--arena mancha--asistencia"></span>
       <h2>Asistencia</h2>
       <div class="filete" aria-hidden="true"></div>
+      <svg class="ilus ilus--lazos solo-b" viewBox="0 0 300 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <defs><g id="lazo"><path d="M0 0c-8-9-18-4-12 3 4 5 9 2 12-3 3 5 8 8 12 3 6-7-4-12-12-3z"/><path d="M0 0l-6 12M0 0l6 12"/></g></defs>
+        <path d="M6 14c22 14 34 14 48 0s26-14 48 0 26 14 48 0 26-14 48 0 26 14 48 0 26-14 48 0"/>
+        <use href="#lazo" x="54" y="14"/><use href="#lazo" x="102" y="14"/><use href="#lazo" x="150" y="14"/><use href="#lazo" x="198" y="14"/><use href="#lazo" x="246" y="14"/>
+      </svg>
       <p class="texto">Nos hace muchísima ilusión compartir este día <span data-tu="contigo" data-vos="con vosotros">contigo</span>.</p>
       <p class="texto">Por favor, <span data-tu="confirma tu" data-vos="confirmad vuestra">confirma tu</span> asistencia antes del <span class="ej">1 de septiembre de 2027</span>.</p>
       <button class="boton" type="button" id="abrir-form">
@@ -157,6 +218,7 @@
     </section>
 
     <footer class="pie">
+      <p class="cartel solo-b"><span data-tu="¡No puedes faltar!" data-vos="¡No podéis faltar!">¡No puedes faltar!</span></p>
       <span class="pie__mono">M&amp;V</span>
       <small>23 · 10 · 2027</small>
     </footer>

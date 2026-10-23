@@ -12,6 +12,7 @@ css/
   base.css            colores, tipografías y reset
   invitacion.css      portada, cabecera, secciones y pie
   formulario.css      ventana de confirmación
+  tema-b.css          diseño alternativo (solo con ?tema=b; todo bajo [data-tema="b"])
 js/
   config.js           URL del Apps Script, fecha y hora de la boda  ← lo que más se toca
   main.js             arranque: lee el enlace, carga la invitación y pinta la página
@@ -22,6 +23,7 @@ js/
   portada.js          sobre de portada y saludo personalizado
   cuenta-atras.js     cuenta atrás
   formulario.js       formulario: mostrar, rellenar, validar y enviar
+  tarjetas.js         tarjetas que se giran (solo en el tema B)
 apps-script/
   Code.gs             backend en Google Apps Script (se pega a mano en la hoja)
 ```
@@ -33,10 +35,22 @@ apps-script/
 | `?i=CODIGO` | Invitación real: datos de la hoja y respuestas guardadas |
 | `?i=CODIGO&prueba=1` | Igual, pero sin apuntar la apertura en la columna «Abierta» |
 | `?para=Nombre` | Modo de prueba con ese nombre (`&trato=tu` o `&trato=vos` para forzarlo) |
+| `&tema=b` (añadido a cualquiera) | Diseño alternativo B: burdeos y crema con ilustración de línea |
 | Sin parámetros o código no válido | Solo la portada con un aviso; el contenido de la boda no se muestra |
 
 > Ocultar el contenido evita que lo vea quien no tiene enlace, pero los datos siguen
 > en el HTML (y el repositorio es público). No pongas aquí nada que no pueda ser público.
+
+## Diseños
+
+Hay dos diseños con el mismo HTML y la misma lógica:
+
+- **A** (por defecto): blanco, dorado y acuarela.
+- **B** (`&tema=b`): burdeos y crema, ilustraciones de línea, tarjetas que se giran,
+  itinerario horizontal y lazos. Sus reglas están en `css/tema-b.css`.
+
+Los elementos exclusivos de un diseño llevan la clase `solo-a` o `solo-b`. Las ilustraciones
+del tema B son SVG propios en `index.html`, listos para sustituir por las de Pilar y Maki.
 
 ## Textos que cambian según el trato
 

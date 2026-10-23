@@ -1,0 +1,230 @@
+/* ==========================================================================
+   Tema B · burdeos y crema con ilustración de línea
+   Se activa con ?tema=b (atributo data-tema="b" en <html>).
+   Todo va bajo [data-tema="b"]: sin el parámetro, este archivo no afecta a nada.
+   ========================================================================== */
+
+[data-tema="b"] {
+  --vino: #7a1731;
+  --vino-oscuro: #5c0f24;
+  --vino-texto: #4a1222;
+  --crema: #fbf5ee;
+  --crema-suave: rgba(251, 245, 238, .78);
+  --lazo: #b8283f;
+
+  --papel: var(--crema);
+  --tinta: var(--vino-texto);
+  --tinta-suave: #8a5a63;
+  --oro: var(--vino);
+  --oro-oscuro: var(--vino-oscuro);
+  --oro-claro: #d9b9bf;
+
+  --manuscrita: "Parisienne", "Pinyon Script", "Snell Roundhand", cursive;
+}
+
+/* Trazo «dibujado a mano» para marcos */
+[data-tema="b"] .a-mano,
+[data-tema="b"] .fecha,
+[data-tema="b"] .tarjeta__frente,
+[data-tema="b"] .tarjeta__dorso,
+[data-tema="b"] .cartel {
+  border: 1.5px solid currentColor;
+  border-radius: 26px 8px 30px 10px / 10px 28px 8px 26px;
+}
+
+[data-tema="b"] .mancha,
+[data-tema="b"] .filete { display: none; }
+
+[data-tema="b"] .ilus { display: block; color: inherit; }
+
+/* Bandas de color a todo lo ancho de la pantalla */
+[data-tema="b"] .banda {
+  background: var(--vino);
+  box-shadow: 0 0 0 100vmax var(--vino);
+  clip-path: inset(0 -100vmax);
+  color: var(--crema);
+}
+
+/* ---------- Portada ---------- */
+[data-tema="b"] .sobre { background: var(--vino); color: var(--crema); }
+[data-tema="b"] .ilus--portada { width: min(70vw, 230px); height: auto; margin-bottom: -6px; }
+[data-tema="b"] .sobre__casamos { font: 400 clamp(30px, 8vw, 38px)/1 var(--manuscrita); transform: rotate(-4deg); }
+[data-tema="b"] .sobre__frase { color: var(--crema); }
+[data-tema="b"] .sobre__aviso { color: var(--crema); }
+[data-tema="b"] .sello {
+  background: var(--crema);
+  color: var(--vino);
+  font-family: var(--manuscrita);
+  width: 76px;
+  height: 76px;
+  font-size: 30px;
+  box-shadow: none;
+}
+[data-tema="b"] .noticia { color: var(--crema); font-size: 18px; letter-spacing: .18em; }
+[data-tema="b"] .toca { color: var(--crema-suave); }
+
+/* ---------- Cabecera (banda burdeos) ---------- */
+[data-tema="b"] .hero {
+  background: var(--vino);
+  box-shadow: 0 0 0 100vmax var(--vino);
+  clip-path: inset(0 -100vmax);
+  color: var(--crema);
+  padding: 36px 0 44px;
+}
+[data-tema="b"] .marco {
+  border: 2px solid var(--crema);
+  border-radius: 190px 190px 18px 18px;
+  width: min(100%, 330px);
+}
+[data-tema="b"] .nombres { font-family: var(--manuscrita); color: var(--crema); font-size: clamp(46px, 13vw, 62px); }
+[data-tema="b"] .casamos { color: var(--crema); font-size: 16px; letter-spacing: .22em; }
+[data-tema="b"] .fecha {
+  color: var(--crema);
+  padding: 14px 18px;
+  margin-top: 26px;
+  max-width: 340px;
+}
+[data-tema="b"] .fecha__lado { border-color: rgba(251, 245, 238, .45); }
+[data-tema="b"] .cuenta b { color: var(--crema); }
+[data-tema="b"] .cuenta span { color: var(--crema-suave); }
+
+/* ---------- Secciones ---------- */
+[data-tema="b"] .bloque { padding-block: 56px; gap: 16px; }
+[data-tema="b"] .bloque h2 {
+  font-family: var(--manuscrita);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: clamp(38px, 10vw, 46px);
+  color: var(--vino);
+}
+[data-tema="b"] .pista { font-size: 15px; font-style: italic; color: var(--tinta-suave); margin-top: -8px; }
+
+/* Alternancia: itinerario y dress code en burdeos */
+[data-tema="b"] #itinerario,
+[data-tema="b"] #dresscode {
+  background: var(--vino);
+  box-shadow: 0 0 0 100vmax var(--vino);
+  clip-path: inset(0 -100vmax);
+  color: var(--crema);
+}
+[data-tema="b"] #itinerario h2,
+[data-tema="b"] #dresscode h2,
+[data-tema="b"] #itinerario .texto,
+[data-tema="b"] #dresscode .texto { color: var(--crema); }
+
+/* Ceremonia + celebración, juntas bajo «¿Dónde será?» */
+[data-tema="b"] #ceremonia { padding-bottom: 12px; }
+[data-tema="b"] #celebracion { padding-top: 12px; }
+
+/* ---------- Tarjetas que se giran ---------- */
+[data-tema="b"] .tarjeta {
+  display: block;
+  width: min(100%, 340px);
+  perspective: 1200px;
+}
+[data-tema="b"] .tarjeta__interior {
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform .7s cubic-bezier(.2, .7, .2, 1);
+}
+[data-tema="b"] .tarjeta.girada .tarjeta__interior { transform: rotateY(180deg); }
+[data-tema="b"] .tarjeta__frente,
+[data-tema="b"] .tarjeta__dorso {
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--crema);
+  color: var(--vino);
+  min-height: 270px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+}
+[data-tema="b"] .tarjeta__frente { font: inherit; cursor: pointer; }
+[data-tema="b"] .tarjeta__frente:hover .ilus { transform: translateY(-2px); }
+[data-tema="b"] .tarjeta__frente .ilus { width: 150px; height: auto; transition: transform .25s; }
+[data-tema="b"] .tarjeta__dorso { transform: rotateY(180deg); cursor: pointer; }
+[data-tema="b"] .tarjeta__titulo { font: 500 15px/1.2 var(--util); letter-spacing: .2em; text-transform: uppercase; }
+[data-tema="b"] .tarjeta__hora { font-size: 18px; }
+[data-tema="b"] .tarjeta__dorso .lugar { font-size: 22px; color: var(--vino-texto); }
+[data-tema="b"] .tarjeta__dorso .texto { color: var(--vino-texto); }
+
+/* ---------- Itinerario horizontal con iconos tipo sello ---------- */
+[data-tema="b"] .itinerario {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px 12px;
+  text-align: center;
+  width: 100%;
+}
+[data-tema="b"] .itinerario li {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 10px;
+}
+[data-tema="b"] .itinerario svg {
+  width: 74px;
+  height: 74px;
+  padding: 9px;
+  color: var(--crema);
+  border: 2px dotted var(--crema);
+  outline: 1px solid var(--crema);
+  outline-offset: -7px;
+  background: rgba(251, 245, 238, .06);
+}
+[data-tema="b"] .itin { display: grid; gap: 2px; }
+[data-tema="b"] .itin__sep { display: none; }
+[data-tema="b"] .itin__nombre { order: -1; font: 500 12px/1.2 var(--util); letter-spacing: .16em; text-transform: uppercase; }
+[data-tema="b"] .itinerario b { color: var(--crema); }
+
+/* ---------- Autobús ---------- */
+[data-tema="b"] .parada { border-color: var(--oro-claro); }
+
+/* ---------- Dress code ---------- */
+[data-tema="b"] .muestras i { border-color: rgba(251, 245, 238, .6); }
+
+/* ---------- Asistencia ---------- */
+[data-tema="b"] .ilus--lazos { width: min(100%, 300px); height: auto; color: var(--lazo); margin-top: -6px; }
+[data-tema="b"] #abrir-form {
+  flex-direction: row;
+  background: var(--vino);
+  color: var(--crema);
+  border-radius: 999px;
+  padding: 14px 26px;
+  margin-top: 6px;
+}
+[data-tema="b"] #abrir-form svg { width: 22px; height: 22px; color: var(--crema); }
+[data-tema="b"] #abrir-form:hover { background: var(--vino-oscuro); }
+
+/* ---------- Pie ---------- */
+[data-tema="b"] .pie {
+  background: var(--vino);
+  box-shadow: 0 0 0 100vmax var(--vino);
+  clip-path: inset(0 -100vmax);
+  color: var(--crema);
+  margin-top: 0;
+  padding: 48px 0 64px;
+  gap: 14px;
+}
+[data-tema="b"] .cartel {
+  font: 400 32px/1.2 var(--manuscrita);
+  padding: 14px 28px;
+  transform: rotate(-3deg);
+  margin: 0 0 8px;
+}
+[data-tema="b"] .pie__mono { color: var(--crema); font-family: var(--manuscrita); }
+[data-tema="b"] .pie small { color: var(--crema-suave); }
+[data-tema="b"] .wrap { padding-bottom: 0; }
+
+/* ---------- Formulario ---------- */
+[data-tema="b"] .ficha { background: var(--crema); color: var(--vino-texto); }
+[data-tema="b"] .ficha h3 { font-family: var(--manuscrita); color: var(--vino); }
+[data-tema="b"] input[type=text],
+[data-tema="b"] textarea,
+[data-tema="b"] select { border-color: var(--oro-claro); border-radius: 18px; }
+[data-tema="b"] .opciones span { border-color: var(--oro-claro); }
+[data-tema="b"] .velo { background: rgba(74, 18, 34, .55); }

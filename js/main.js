@@ -17,6 +17,7 @@ import { iniciarPortada, saludoCargando, pintarSaludo, habilitarPortada, bloquea
 import { avisoSinInvitacion } from './mensajes.js';
 import { iniciarCuentaAtras } from './cuenta-atras.js';
 import { iniciarFormulario, prepararFormulario } from './formulario.js';
+import { iniciarTarjetas } from './tarjetas.js';
 
 function pintar() {
   if (estado.modo === 'sin_invitacion') {
@@ -62,6 +63,7 @@ async function iniciar() {
   iniciarPortada();
   iniciarCuentaAtras(BODA.inicio);
   iniciarFormulario();
+  iniciarTarjetas();
 
   const parametros = new URLSearchParams(location.search);
   estado.codigo = (parametros.get('i') || '').trim().toLowerCase();
