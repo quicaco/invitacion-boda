@@ -55,9 +55,11 @@
   background: var(--crema);
   color: var(--vino);
   font-family: var(--manuscrita);
-  width: 76px;
-  height: 76px;
-  font-size: 30px;
+  width: 92px;
+  height: 92px;
+  font-size: 24px;
+  letter-spacing: -.01em;
+  white-space: nowrap;
   box-shadow: none;
 }
 [data-tema="b"] .noticia { color: var(--crema); font-size: 18px; letter-spacing: .18em; }
