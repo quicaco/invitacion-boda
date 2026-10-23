@@ -63,7 +63,8 @@
   display: grid;
   place-items: center;
   color: var(--papel);
-  font: 400 34px/1 var(--script);
+  font: 400 30px/1 var(--script);
+  white-space: nowrap;
   box-shadow: 0 2px 0 rgba(0, 0, 0, .08);
   margin-top: 10px;
   transition: transform .3s;
