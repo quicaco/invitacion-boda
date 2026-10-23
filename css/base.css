@@ -51,6 +51,10 @@ img { max-width: 100%; }
 
 :focus-visible { outline: 2px solid var(--oro); outline-offset: 3px; }
 
+/* Elementos de un solo diseño: .solo-b solo se ve con ?tema=b; .solo-a, solo en el diseño A */
+:root:not([data-tema="b"]) .solo-b { display: none !important; }
+[data-tema="b"] .solo-a { display: none !important; }
+
 /* Texto de ejemplo pendiente de sustituir por el real (subrayado de puntos) */
 .ej {
   text-decoration: underline dotted var(--oro-claro);

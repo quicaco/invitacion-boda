@@ -63,7 +63,8 @@
   display: grid;
   place-items: center;
   color: var(--papel);
-  font: 400 34px/1 var(--script);
+  font: 400 30px/1 var(--script);
+  white-space: nowrap;
   box-shadow: 0 2px 0 rgba(0, 0, 0, .08);
   margin-top: 10px;
   transition: transform .3s;
@@ -175,6 +176,11 @@
 }
 .boton svg { width: 44px; height: 44px; color: var(--oro); transition: transform .25s; }
 .boton:hover svg { transform: translateY(-2px); }
+
+/* Tarjetas (solo tienen efecto en el tema B): en el diseño A no alteran la maquetación */
+.tarjeta,
+.tarjeta__interior,
+.tarjeta__dorso { display: contents; }
 
 /* Itinerario */
 .itinerario { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 22px; text-align: left; }
